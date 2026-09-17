@@ -4,6 +4,7 @@ import { getCollection, render } from "astro:content";
 import { formatPrice, stockLabel } from "../../lib/format";
 import { whatsappLink, productMessage } from "../../lib/whatsapp";
 import ProductCard from "../../components/ProductCard.astro";
+import { categoryHref } from "../../data/categories";
 
 export async function getStaticPaths() {
   const products = await getCollection("products");
@@ -56,7 +57,7 @@ const related = all
       <a href="/productos" class="hover:text-[var(--color-rivet)]">Catálogo</a>
       <span aria-hidden="true">/</span>
       <a
-        href={`/productos?cat=${encodeURIComponent(product.data.category)}`}
+        href={categoryHref(product.data.category)}
         class="hover:text-[var(--color-rivet)]">{product.data.category}</a
       >
       <span aria-hidden="true">/</span>
@@ -159,6 +160,22 @@ const related = all
             class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-ink)] px-6 py-4 text-base font-semibold text-[var(--color-ink)] transition-colors hover:border-[var(--color-rivet)] hover:text-[var(--color-rivet)]"
           >
             Llamar al local
+          </a>
+        </div>
+
+        <div class="mt-4 flex items-center justify-between gap-3">
+          <a
+            href="/productos"
+            class="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--color-steel-soft)] hover:text-[var(--color-rivet)]"
+          >
+            <span aria-hidden="true">←</span> Volver al catálogo
+          </a>
+          <a
+            href={categoryHref(product.data.category)}
+            class="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--color-steel-soft)] hover:text-[var(--color-rivet)]"
+          >
+            Más de {product.data.category}
+            <span aria-hidden="true">→</span>
           </a>
         </div>
 

@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 import { whatsappLink, productMessage } from "../lib/whatsapp";
 import ProductCard from "../components/ProductCard.astro";
+import { categoryHref } from "../data/categories";
 
 const allProducts = await getCollection("products");
 
@@ -198,10 +199,10 @@ const wa = whatsappLink(
           </h2>
         </div>
         <a
-          href="/productos"
+          href="/categorias"
           class="mono hidden text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)] hover:text-[var(--color-rivet)] md:inline"
         >
-          Ver todo →
+          Ver todas →
         </a>
       </div>
 
@@ -210,7 +211,7 @@ const wa = whatsappLink(
           categories.map((c) => (
             <li>
               <a
-                href={`/productos?cat=${encodeURIComponent(c.name)}`}
+                href={categoryHref(c.name)}
                 class="flex h-full flex-col justify-between rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 transition-colors hover:border-[var(--color-ink)]"
               >
                 <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">

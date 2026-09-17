@@ -1,5 +1,7 @@
 ---
 import Brand from "./Brand.astro";
+import SearchBar, { type SearchProduct } from "./SearchBar.tsx";
+import { getCollection } from "astro:content";
 
 const path = Astro.url.pathname;
 const isCatalog = path.startsWith("/productos");
@@ -7,9 +9,32 @@ const isCatalog = path.startsWith("/productos");
 const navItems = [
   { href: "/", label: "Inicio" },
   { href: "/productos", label: "Catálogo" },
-  { href: "/#categorias", label: "Categorías" },
+  { href: "/categorias", label: "Categorías" },
   { href: "/#contacto", label: "Contacto" },
 ];
+
+// Productos serializados para la isla de búsqueda.
+// El searchBlob se pre-computa en el servidor para que el cliente
+// no tenga que re-procesar el string cada keystroke.
+const allProducts = await getCollection("products");
+const searchProducts: SearchProduct[] = allProducts.map((p) => ({
+  slug: p.id,
+  name: p.data.name,
+  category: p.data.category,
+  price: p.data.price,
+  stock: p.data.stock,
+  sku: p.data.sku,
+  image: p.data.image,
+  searchBlob: [
+    p.data.name,
+    p.data.sku,
+    p.data.category,
+    ...(p.data.tags ?? []),
+    p.data.brand ?? "",
+  ]
+    .join(" ")
+    .toLowerCase(),
+}));
 ---
 
 <header
@@ -36,9 +61,6 @@ const navItems = [
       <ul class="flex items-center gap-1 text-sm">
         {
           navItems.map((item) => {
-            // Solo activamos si la ruta "real" (sin hash) coincide con la ruta actual
-            // y no es un ancla a la home ("/#xxx") que no debe marcar el link como activo
-            // cuando estamos en /productos o en otra sección.
             const baseHref = item.href.split("#")[0];
             const isAnchorToHome = item.href.startsWith("/#");
             const active =
@@ -67,6 +89,8 @@ const navItems = [
     </nav>
 
     <div class="flex items-center gap-2">
+      <SearchBar client:load products={searchProducts} />
+
       <a
         href="https://wa.me/5491145678900?text=Hola%2C%20quiero%20consultar%20por%20un%20producto"
         target="_blank"
