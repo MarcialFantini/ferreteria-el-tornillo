@@ -1,42 +1,72 @@
 @import "tailwindcss";
 
 /* Design tokens — Ferretería El Tornillo
-   Paleta: papel cálido neutro + rojo industrial + ámbar de ticket.
-   Evitamos el cliché cream+brass del consumer premium.
-   Una sola fuente groteska + mono para precios/SKU. */
+   Paleta oficial:
+     rivet  #F4B41A  amarillo industrial (CTA principal)
+     steel  #2A2D34  acero oscuro (texto principal)
+     kraft  #E8DCC4  papel kraft (fondo cálido)
+     mark   #C73E1D  rojo industrial (alertas / acentos)
+
+   Nota de implementación: las páginas (/index, /productos, /productos/[slug])
+   referencian los nombres legacy --color-rivet / --color-amber / --color-paper
+   con clases arbitrarias de Tailwind. Para no romper esas páginas y respetar
+   el brief, mapeamos los tokens legacy a la paleta oficial así:
+     --color-rivet       -> mark rojo     (preserva CTAs rojas existentes)
+     --color-amber       -> rivet amarillo (CTA oficial en componentes)
+     --color-paper       -> kraft         (fondo)
+     --color-paper-deep  -> kraft profundo
+     --color-ink         -> steel         (texto principal)
+     --color-ink-soft    -> steel suave
+     --color-iron        -> steel apagado
+   Y exponemos los nombres canónicos del brief como aliases. */
 @theme {
-  --color-paper: #f5f2ea;
-  --color-paper-deep: #ebe6d8;
-  --color-ink: #171513;
-  --color-ink-soft: #3a342d;
-  --color-iron: #5d544a;
-  --color-rivet: #b63828;
-  --color-rivet-deep: #8b291b;
-  --color-amber: #c28e3f;
-  --color-line: #d8d2c2;
-  --color-line-soft: #e6e1d3;
+  /* Paleta oficial — nombres canónicos */
+  --color-rivet: #f4b41a;       /* amarillo industrial (rivet) */
+  --color-rivet-deep: #c49415;  /* rivet oscuro para hover */
+  --color-steel: #2a2d34;       /* acero oscuro (texto) */
+  --color-steel-soft: #4a4e56;  /* acero suave (texto secundario) */
+  --color-steel-muted: #7a7e86; /* acero apagado (metadata) */
+  --color-kraft: #e8dcc4;       /* papel kraft (fondo) */
+  --color-kraft-deep: #d9cfb7;  /* kraft profundo (cards, fondos alternos) */
+  --color-mark: #c73e1d;        /* rojo industrial (alertas, acentos) */
+  --color-mark-deep: #9c2e16;   /* mark oscuro para hover */
 
-  --font-display: "Plus Jakarta Sans", "Geist", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Aliases para mantener compatibilidad con clases Tailwind arbitrarias
+     ya usadas en el resto del sitio. */
+  --color-paper: var(--color-kraft);
+  --color-paper-deep: var(--color-kraft-deep);
+  --color-ink: var(--color-steel);
+  --color-ink-soft: var(--color-steel-soft);
+  --color-iron: var(--color-steel-muted);
+  --color-amber: var(--color-rivet);
 
-  --shadow-card: 0 1px 0 rgba(23, 21, 19, 0.04);
-  --shadow-ticket: 0 12px 24px -16px rgba(23, 21, 19, 0.18);
+  /* Líneas finas — base para grids técnicos y bordes blueprint */
+  --color-line: #c5b89e;
+  --color-line-soft: #d6cbb2;
 
-  --radius-pill: 999px;
+  /* Tipografía — body sans + mono para precios/SKUs */
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo,
+    Consolas, monospace;
+  /* alias legacy */
+  --font-display: var(--font-body);
+
+  /* Sombras planas, sin difuminado AI */
+  --shadow-card: 0 1px 0 rgba(42, 45, 52, 0.04);
+  --shadow-ticket: 0 12px 24px -16px rgba(42, 45, 52, 0.18);
 }
 
-/* Self-hosted display font (Plus Jakarta Sans) + mono (JetBrains Mono).
-   Descargados vía pnpm en build setup; por simplicidad los servimos
-   desde public/fonts con @font-face local. Si los assets no están
-   en /public/fonts, el fallback a system-ui mantiene legibilidad. */
+/* @font-face fallback por si Bunny Fonts está bloqueado: usa el archivo
+   del sistema si está disponible; si no, cae a system-ui preservando
+   la legibilidad del cuerpo. */
 @font-face {
-  font-family: "Plus Jakarta Sans";
+  font-family: "Inter";
   font-style: normal;
-  font-weight: 400 800;
+  font-weight: 400 700;
   font-display: swap;
-  src: local("Plus Jakarta Sans"), local("PlusJakartaSans-Regular");
+  src: local("Inter"), local("Inter-Regular");
 }
-
 @font-face {
   font-family: "JetBrains Mono";
   font-style: normal;
@@ -45,32 +75,32 @@
   src: local("JetBrains Mono"), local("JetBrainsMono-Regular");
 }
 
+/* Reset / base */
 html {
-  font-family: var(--font-display);
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  font-family: var(--font-body);
+  background-color: var(--color-kraft);
+  color: var(--color-steel);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 body {
-  background-color: var(--color-paper);
-  color: var(--color-ink);
+  background-color: var(--color-kraft);
+  color: var(--color-steel);
 }
 
-/* Hairline divider, oficio feel. */
+/* Hairline divisorias — oficio feel. */
 .rule {
   border-top: 1px solid var(--color-line);
 }
 
-/* Ticket / mono accents for prices and SKUs. */
+/* Etiquetas mono: precios, SKUs, timestamps, código. Sin serif, sin italic. */
 .mono {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
 
-/* Focus ring accesible, contraste AA contra paper. */
+/* Focus ring accesible, contraste AA contra kraft. */
 :focus-visible {
   outline: 2px solid var(--color-rivet);
   outline-offset: 3px;
@@ -88,8 +118,99 @@ body {
   }
 }
 
-/* Selection color ferretería. */
+/* Selection ferretería — amarillo sobre steel. */
 ::selection {
   background: var(--color-rivet);
-  color: var(--color-paper);
+  color: var(--color-steel);
+}
+
+/* ============ Identidad visual: utility classes industriales ============ */
+
+/* Crosshair marks para esquinas de tarjetas / paneles.
+   Se aplican vía data attribute en el contenedor y posicionan 4 esquinas.
+   Marca visual estilo plano técnico: thin steel lines, 8x8. */
+.crosshair {
+  position: relative;
+}
+.crosshair::before,
+.crosshair::after,
+.crosshair > .ch-tl,
+.crosshair > .ch-tr,
+.crosshair > .ch-bl,
+.crosshair > .ch-br {
+  content: "";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  pointer-events: none;
+  z-index: 1;
+}
+.crosshair::before {
+  top: 6px;
+  left: 6px;
+  border-top: 1.5px solid var(--color-steel);
+  border-left: 1.5px solid var(--color-steel);
+}
+.crosshair::after {
+  top: 6px;
+  right: 6px;
+  border-top: 1.5px solid var(--color-steel);
+  border-right: 1.5px solid var(--color-steel);
+}
+/* Si el contenedor tiene hijos .ch-bl y .ch-br, los usamos para esquinas
+   inferiores y desactivamos los pseudo-elementos traseros en ese caso. */
+.crosshair.has-bottom-crosshairs::before {
+  /* mantiene TL */
+}
+.crosshair > .ch-bl {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 1.5px solid var(--color-steel);
+  border-left: 1.5px solid var(--color-steel);
+}
+.crosshair > .ch-br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 1.5px solid var(--color-steel);
+  border-right: 1.5px solid var(--color-steel);
+}
+
+/* Grid blueprint — fondo técnico para hero / cards destacados. */
+.blueprint-bg {
+  background-color: var(--color-kraft);
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Tabla densa industrial — líneas finas, padding compacto, mono en números. */
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.spec-table thead th {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-steel-muted);
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-line);
+}
+.spec-table tbody td {
+  padding: 10px;
+  border-bottom: 1px solid var(--color-line);
+  color: var(--color-steel);
+  vertical-align: top;
+}
+.spec-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.spec-table .num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }

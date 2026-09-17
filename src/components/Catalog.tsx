@@ -89,16 +89,18 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
         aria-label="Filtros de catálogo"
         class="lg:sticky lg:top-24 lg:self-start"
       >
-        <div class="rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] p-5">
-          <div class="mb-5 flex items-center justify-between">
-            <h2 class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-iron)]">
-              Filtros
+        <div class="crosshair has-bottom-crosshairs relative border border-[var(--color-steel)] bg-[var(--color-kraft)] p-5">
+          <span class="ch-bl" aria-hidden="true" />
+          <span class="ch-br" aria-hidden="true" />
+          <div class="mb-5 flex items-center justify-between border-b border-[var(--color-line)] pb-3">
+            <h2 class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-steel-muted)]">
+              Filtros · Catálogo
             </h2>
             {hasFilters && (
               <button
                 type="button"
                 onClick={clearFilters}
-                class="mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-rivet)] hover:underline"
+                class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-mark)] hover:underline"
               >
                 Limpiar
               </button>
@@ -106,7 +108,7 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
           </div>
 
           <label class="block">
-            <span class="mb-2 block text-sm font-semibold text-[var(--color-ink)]">
+            <span class="mono mb-2 block text-[10px] uppercase tracking-[0.18em] text-[var(--color-steel-muted)]">
               Buscar
             </span>
             <input
@@ -115,16 +117,16 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
               value={query}
               onInput={(e) => setQuery((e.currentTarget as HTMLInputElement).value)}
               placeholder="Nombre, SKU o marca"
-              class="w-full rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-3 py-2.5 text-sm text-[var(--color-ink)] placeholder:text-[var(--color-iron)] focus:border-[var(--color-ink)] focus:outline-none"
+              class="mono w-full border border-[var(--color-steel)] bg-[var(--color-kraft)] px-3 py-2.5 text-sm text-[var(--color-steel)] placeholder:text-[var(--color-steel-muted)] focus:border-[var(--color-rivet)] focus:outline-none"
               aria-label="Buscar producto por nombre, SKU o marca"
             />
           </label>
 
           <fieldset class="mt-6">
-            <legend class="mb-2 block text-sm font-semibold text-[var(--color-ink)]">
+            <legend class="mono mb-2 block text-[10px] uppercase tracking-[0.18em] text-[var(--color-steel-muted)]">
               Categoría
             </legend>
-            <ul class="flex flex-col gap-1">
+            <ul class="flex flex-col">
               {["Todas", ...categories].map((c) => {
                 const id = `cat-${c.replace(/\s+/g, "-").toLowerCase()}`;
                 const count =
@@ -136,7 +138,7 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
                   <li>
                     <label
                       for={id}
-                      class="flex cursor-pointer items-center justify-between rounded-md px-2 py-1.5 text-sm hover:bg-[var(--color-paper-deep)]"
+                      class="flex cursor-pointer items-center justify-between border-b border-[var(--color-line)] px-1 py-2 text-sm hover:bg-[var(--color-kraft-deep)]"
                     >
                       <span class="flex items-center gap-2">
                         <input
@@ -148,11 +150,11 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
                           onChange={() => setCategory(c)}
                           class="accent-[var(--color-rivet)]"
                         />
-                        <span class={checked ? "font-semibold text-[var(--color-ink)]" : "text-[var(--color-ink-soft)]"}>
+                        <span class={checked ? "font-semibold text-[var(--color-steel)]" : "text-[var(--color-steel-soft)]"}>
                           {c}
                         </span>
                       </span>
-                      <span class="mono text-[11px] text-[var(--color-iron)]">{count}</span>
+                      <span class="mono text-[11px] text-[var(--color-steel-muted)]">{count}</span>
                     </label>
                   </li>
                 );
@@ -161,9 +163,9 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
           </fieldset>
 
           <div class="mt-6">
-            <label class="mb-2 flex items-baseline justify-between text-sm font-semibold text-[var(--color-ink)]">
+            <label class="mono mb-2 flex items-baseline justify-between text-[10px] uppercase tracking-[0.18em] text-[var(--color-steel-muted)]">
               <span>Precio máximo</span>
-              <span class="mono text-[var(--color-ink-soft)]">
+              <span class="mono text-[var(--color-steel)]">
                 {new Intl.NumberFormat("es-AR", {
                   style: "currency",
                   currency: "ARS",
@@ -181,7 +183,7 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
               class="w-full accent-[var(--color-rivet)]"
               aria-label="Precio máximo"
             />
-            <div class="mt-1 flex justify-between text-[11px] text-[var(--color-iron)]">
+            <div class="mt-1 flex justify-between text-[11px] text-[var(--color-steel-muted)]">
               <span class="mono">
                 {new Intl.NumberFormat("es-AR").format(priceBounds.min)}
               </span>
@@ -195,43 +197,46 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
 
       {/* Resultados */}
       <section aria-label="Resultados del catálogo">
-        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p class="text-sm text-[var(--color-ink-soft)]">
-            <span class="font-semibold text-[var(--color-ink)]">{filtered.length}</span>{" "}
-            de {products.length} productos
+        <div class="mb-4 flex flex-col gap-3 border-b border-[var(--color-line)] pb-3 sm:flex-row sm:items-center sm:justify-between">
+          <p class="mono text-[12px] uppercase tracking-[0.12em] text-[var(--color-steel-soft)]">
+            <span class="font-bold text-[var(--color-steel)]">{filtered.length}</span>
+            {" / "}
+            <span>{products.length}</span> Productos
           </p>
-          <label class="flex items-center gap-2 text-sm text-[var(--color-ink-soft)]">
-            <span>Ordenar por</span>
+          <label class="flex items-center gap-2 text-sm text-[var(--color-steel-soft)]">
+            <span class="mono text-[10px] uppercase tracking-[0.18em]">Ordenar</span>
             <select
               value={sort}
               onChange={(e) =>
                 setSort((e.currentTarget as HTMLSelectElement).value as typeof sort)
               }
-              class="rounded-lg border border-[var(--color-line)] bg-[var(--color-paper)] px-2.5 py-2 text-sm text-[var(--color-ink)] focus:border-[var(--color-ink)] focus:outline-none"
+              class="mono border border-[var(--color-steel)] bg-[var(--color-kraft)] px-2.5 py-2 text-[12px] uppercase tracking-[0.08em] text-[var(--color-steel)] focus:border-[var(--color-rivet)] focus:outline-none"
             >
-              <option value="featured">Destacados primero</option>
-              <option value="priceAsc">Menor precio</option>
-              <option value="priceDesc">Mayor precio</option>
-              <option value="name">Nombre (A-Z)</option>
+              <option value="featured">Destacados</option>
+              <option value="priceAsc">$ ASC</option>
+              <option value="priceDesc">$ DESC</option>
+              <option value="name">A - Z</option>
             </select>
           </label>
         </div>
 
         {filtered.length === 0 ? (
-          <div class="rounded-2xl border border-dashed border-[var(--color-line)] bg-[var(--color-paper)] p-10 text-center">
-            <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-iron)]">
+          <div class="crosshair has-bottom-crosshairs relative border border-dashed border-[var(--color-steel-muted)] bg-[var(--color-kraft)] p-10 text-center">
+            <span class="ch-bl" aria-hidden="true" />
+            <span class="ch-br" aria-hidden="true" />
+            <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-steel-muted)]">
               Sin coincidencias
             </p>
-            <h3 class="mt-3 text-xl font-semibold text-[var(--color-ink)]">
+            <h3 class="mt-3 text-xl font-semibold text-[var(--color-steel)]">
               No hay productos con esos filtros.
             </h3>
-            <p class="mt-2 text-sm text-[var(--color-ink-soft)]">
+            <p class="mt-2 text-sm text-[var(--color-steel-soft)]">
               Probá ampliar el rango de precio o cambiar la categoría.
             </p>
             <button
               type="button"
               onClick={clearFilters}
-              class="mt-5 inline-flex items-center justify-center rounded-full bg-[var(--color-ink)] px-5 py-2.5 text-sm font-semibold text-[var(--color-paper)] hover:bg-[var(--color-rivet)]"
+              class="mono mt-5 inline-flex items-center justify-center bg-[var(--color-steel)] px-5 py-2.5 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--color-kraft)] hover:bg-[var(--color-rivet)] hover:text-[var(--color-steel)]"
             >
               Limpiar filtros
             </button>
@@ -240,10 +245,12 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
           <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {filtered.map((p) => (
               <li>
-                <article class="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[var(--color-line)] bg-[var(--color-paper)] transition-colors hover:border-[var(--color-ink)]">
+                <article class="crosshair has-bottom-crosshairs group relative flex h-full flex-col overflow-hidden border border-[var(--color-steel)] bg-[var(--color-kraft)] transition-colors hover:border-[var(--color-rivet)]">
+                  <span class="ch-bl" aria-hidden="true" />
+                  <span class="ch-br" aria-hidden="true" />
                   <a
                     href={`/productos/${p.slug}`}
-                    class="relative block aspect-square overflow-hidden bg-[var(--color-paper-deep)]"
+                    class="relative block aspect-square overflow-hidden bg-[var(--color-kraft-deep)]"
                   >
                     <img
                       src={p.image}
@@ -257,27 +264,30 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
                   </a>
 
                   <div class="flex flex-1 flex-col gap-3 p-5">
-                    <div class="flex items-baseline justify-between gap-3">
-                      <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
+                    <div class="flex items-baseline justify-between gap-3 border-b border-[var(--color-line)] pb-2">
+                      <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-steel-muted)]">
                         {p.category}
                       </p>
-                      <p class="mono text-[10px] tracking-[0.18em] text-[var(--color-iron)]">
-                        SKU {p.sku}
+                      <p class="mono text-[10px] tracking-[0.18em] text-[var(--color-steel-muted)]">
+                        SKU · {p.sku}
                       </p>
                     </div>
 
-                    <h3 class="text-[17px] font-semibold leading-snug text-[var(--color-ink)]">
+                    <h3 class="text-[16px] font-semibold leading-snug text-[var(--color-steel)]">
                       <a
                         href={`/productos/${p.slug}`}
-                        class="after:absolute after:inset-0 hover:underline"
+                        class="after:absolute after:inset-0 hover:text-[var(--color-rivet)]"
                       >
                         {p.name}
                       </a>
                     </h3>
 
-                    <div class="mt-auto flex items-end justify-between gap-3 pt-2">
+                    <div class="mt-auto flex items-end justify-between gap-3 pt-3">
                       <div>
-                        <p class="mono text-2xl font-bold tracking-tight text-[var(--color-ink)]">
+                        <p class="mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-steel-muted)]">
+                          Precio
+                        </p>
+                        <p class="mono text-2xl font-bold tracking-tight text-[var(--color-steel)]">
                           {new Intl.NumberFormat("es-AR", {
                             style: "currency",
                             currency: "ARS",
@@ -287,10 +297,10 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
                         <p
                           class={`mono mt-1 text-[10px] uppercase tracking-[0.16em] ${
                             p.stock <= 0
-                              ? "text-[var(--color-rivet)]"
+                              ? "text-[var(--color-mark)]"
                               : p.stock < 10
-                              ? "text-[var(--color-amber)]"
-                              : "text-[var(--color-iron)]"
+                              ? "text-[var(--color-rivet-deep)]"
+                              : "text-[var(--color-steel-muted)]"
                           }`}
                         >
                           {p.stock <= 0
@@ -305,7 +315,7 @@ export default function Catalog({ products, categories, priceBounds }: Props) {
                         target="_blank"
                         rel="noopener"
                         aria-label={`Consultar por ${p.name} vía WhatsApp`}
-                        class="relative z-10 inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[var(--color-rivet)] text-[var(--color-paper)] transition-transform hover:bg-[var(--color-rivet-deep)] active:scale-[0.95]"
+                        class="relative z-10 inline-flex h-10 w-10 shrink-0 items-center justify-center bg-[var(--color-rivet)] text-[var(--color-steel)] transition-transform hover:bg-[var(--color-rivet-deep)] active:scale-[0.95]"
                       >
                         <svg
                           aria-hidden="true"
