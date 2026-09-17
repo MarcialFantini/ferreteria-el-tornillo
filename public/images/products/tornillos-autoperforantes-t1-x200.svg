@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-tornillos-autoperforantes-t1-x200">
+  <title id="t-tornillos-autoperforantes-t1-x200">Tornillos autoperforantes T1 caja x 200 unidades</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      
+          <ellipse cx="200" cy="130" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="192" y="40" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="176,120 224,120 214,150 186,150" fill="#171513"/>
+          <rect x="198" y="40" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="330" cy="130" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="322" y="40" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="306,120 354,120 344,150 316,150" fill="#171513"/>
+          <rect x="328" y="40" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="460" cy="130" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="452" y="40" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="436,120 484,120 474,150 446,150" fill="#171513"/>
+          <rect x="458" y="40" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="590" cy="130" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="582" y="40" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="566,120 614,120 604,150 576,150" fill="#171513"/>
+          <rect x="588" y="40" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="200" cy="290" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="192" y="200" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="176,280 224,280 214,310 186,310" fill="#171513"/>
+          <rect x="198" y="200" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="330" cy="290" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="322" y="200" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="306,280 354,280 344,310 316,310" fill="#171513"/>
+          <rect x="328" y="200" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="460" cy="290" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="452" y="200" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="436,280 484,280 474,310 446,310" fill="#171513"/>
+          <rect x="458" y="200" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="590" cy="290" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="582" y="200" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="566,280 614,280 604,310 576,310" fill="#171513"/>
+          <rect x="588" y="200" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="200" cy="450" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="192" y="360" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="176,440 224,440 214,470 186,470" fill="#171513"/>
+          <rect x="198" y="360" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="330" cy="450" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="322" y="360" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="306,440 354,440 344,470 316,470" fill="#171513"/>
+          <rect x="328" y="360" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="460" cy="450" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="452" y="360" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="436,440 484,440 474,470 446,470" fill="#171513"/>
+          <rect x="458" y="360" width="4" height="40" fill="#171513"/>
+        
+          <ellipse cx="590" cy="450" rx="46" ry="10" fill="#171513" opacity="0.15"/>
+          <rect x="582" y="360" width="16" height="80" rx="4" fill="#5d544a"/>
+          <polygon points="566,440 614,440 604,470 576,470" fill="#171513"/>
+          <rect x="588" y="360" width="4" height="40" fill="#171513"/>
+        
+    </g>
+</svg>

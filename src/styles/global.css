@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+/* Design tokens — Ferretería El Tornillo
+   Paleta: papel cálido neutro + rojo industrial + ámbar de ticket.
+   Evitamos el cliché cream+brass del consumer premium.
+   Una sola fuente groteska + mono para precios/SKU. */
+@theme {
+  --color-paper: #f5f2ea;
+  --color-paper-deep: #ebe6d8;
+  --color-ink: #171513;
+  --color-ink-soft: #3a342d;
+  --color-iron: #5d544a;
+  --color-rivet: #b63828;
+  --color-rivet-deep: #8b291b;
+  --color-amber: #c28e3f;
+  --color-line: #d8d2c2;
+  --color-line-soft: #e6e1d3;
+
+  --font-display: "Plus Jakarta Sans", "Geist", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --shadow-card: 0 1px 0 rgba(23, 21, 19, 0.04);
+  --shadow-ticket: 0 12px 24px -16px rgba(23, 21, 19, 0.18);
+
+  --radius-pill: 999px;
+}
+
+/* Self-hosted display font (Plus Jakarta Sans) + mono (JetBrains Mono).
+   Descargados vía pnpm en build setup; por simplicidad los servimos
+   desde public/fonts con @font-face local. Si los assets no están
+   en /public/fonts, el fallback a system-ui mantiene legibilidad. */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: local("Plus Jakarta Sans"), local("PlusJakartaSans-Regular");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: local("JetBrains Mono"), local("JetBrainsMono-Regular");
+}
+
+html {
+  font-family: var(--font-display);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* Hairline divider, oficio feel. */
+.rule {
+  border-top: 1px solid var(--color-line);
+}
+
+/* Ticket / mono accents for prices and SKUs. */
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Focus ring accesible, contraste AA contra paper. */
+:focus-visible {
+  outline: 2px solid var(--color-rivet);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Reduce motion global. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Selection color ferretería. */
+::selection {
+  background: var(--color-rivet);
+  color: var(--color-paper);
+}

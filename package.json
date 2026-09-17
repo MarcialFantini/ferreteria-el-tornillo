@@ -12,9 +12,17 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.3.3"
+    "@astrojs/preact": "^6.0.5",
+    "astro": "^7.3.3",
+    "preact": "^10.29.8"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@tailwindcss/vite": "^4.3.3",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
   }
 }

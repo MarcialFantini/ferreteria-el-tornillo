@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-llave-stilson-12-crossmaster">
+  <title id="t-llave-stilson-12-crossmaster">Llave stilson 12 pulgadas Crossmaster</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="60" y="80" width="120" height="40" fill="#171513"/>
+      <rect x="180" y="60" width="120" height="80" fill="#171513"/>
+      <polygon points="60,80 60,120 80,160 140,160 140,120 140,80" fill="#171513"/>
+      <polygon points="180,60 300,60 320,80 320,140 300,160 240,160 240,140 200,140" fill="#171513"/>
+      <circle cx="100" cy="100" r="20" fill="#c28e3f"/>
+    </g>
+</svg>

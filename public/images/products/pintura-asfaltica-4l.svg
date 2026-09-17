@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-pintura-asfaltica-4l">
+  <title id="t-pintura-asfaltica-4l">Pintura asfáltica 4 litros</title>
+  <rect width="800" height="800" fill="#ebe6d8"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="200" y="60" width="160" height="40" fill="#171513"/>
+      <rect x="170" y="100" width="220" height="60" rx="6" fill="#5d544a"/>
+      <rect x="170" y="160" width="220" height="320" fill="#171513"/>
+      <rect x="190" y="220" width="180" height="40" fill="#b63828"/>
+      <text x="280" y="250" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="22" font-weight="700" fill="#f5f2ea">ASFÁLTICA</text>
+      <rect x="190" y="280" width="180" height="14" fill="#f5f2ea"/>
+      <rect x="190" y="310" width="120" height="14" fill="#f5f2ea"/>
+      <text x="280" y="400" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="44" font-weight="700" fill="#c28e3f">4 L</text>
+    </g>
+</svg>

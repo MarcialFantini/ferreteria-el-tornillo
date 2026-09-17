@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-amoladora-angular-4-bosch">
+  <title id="t-amoladora-angular-4-bosch">Amoladora angular 4½ Bosch 820W</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="100" y="40" width="380" height="160" rx="20" fill="#171513"/>
+      <rect x="130" y="60" width="100" height="120" fill="#5d544a"/>
+      <circle cx="500" cy="120" r="80" fill="#171513"/>
+      <circle cx="500" cy="120" r="60" fill="#5d544a"/>
+      <circle cx="500" cy="120" r="14" fill="#c28e3f"/>
+      <rect x="200" y="220" width="80" height="200" rx="18" fill="#171513"/>
+      <rect x="320" y="280" width="220" height="40" rx="10" fill="#171513"/>
+    </g>
+</svg>

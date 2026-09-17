@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-juego-llaves-allen-milimetricas">
+  <title id="t-juego-llaves-allen-milimetricas">Juego de llaves Allen milimétricas</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <polygon points="100,80 140,40 180,80 180,140 140,180 100,140" fill="#171513"/><polygon points="210,80 240,50 270,80 270,140 240,170 210,140" fill="#171513"/><polygon points="320,80 342.5,57.5 365,80 365,140 342.5,162.5 320,140" fill="#171513"/><polygon points="430,80 447.5,62.5 465,80 465,140 447.5,157.5 430,140" fill="#171513"/><polygon points="540,80 552.5,67.5 565,80 565,140 552.5,152.5 540,140" fill="#171513"/>
+      <rect x="60" y="240" width="640" height="40" rx="6" fill="#c28e3f"/>
+    </g>
+</svg>

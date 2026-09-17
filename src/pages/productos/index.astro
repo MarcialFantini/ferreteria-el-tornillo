@@ -1,0 +1,73 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Catalog, { type CatalogProduct } from "../../components/Catalog.tsx";
+import { getCollection } from "astro:content";
+import { productMessage, whatsappLink } from "../../lib/whatsapp";
+
+const allProducts = await getCollection("products");
+
+const prices = allProducts.map((p) => p.data.price);
+const priceBounds = {
+  min: Math.floor(Math.min(...prices) / 1000) * 1000,
+  max: Math.ceil(Math.max(...prices) / 1000) * 1000,
+};
+
+const categories = [...new Set(allProducts.map((p) => p.data.category))].sort((a, b) =>
+  a.localeCompare(b, "es"),
+);
+
+const products: CatalogProduct[] = allProducts.map((p) => ({
+  slug: p.id,
+  name: p.data.name,
+  category: p.data.category,
+  price: p.data.price,
+  stock: p.data.stock,
+  sku: p.data.sku,
+  image: p.data.image,
+  imageAlt: p.data.imageAlt,
+  searchBlob: [
+    p.data.name,
+    p.data.sku,
+    p.data.category,
+    ...(p.data.tags ?? []),
+    p.data.brand ?? "",
+  ]
+    .join(" ")
+    .toLowerCase(),
+  wa: whatsappLink(productMessage(p.data)),
+}));
+---
+
+<Layout
+  title="Catálogo · Ferretería El Tornillo"
+  description="Catálogo completo de herramientas, plomería, electricidad y materiales de construcción. Filtrá por categoría y rango de precio."
+>
+  <section class="border-b border-[var(--color-line)] bg-[var(--color-paper)]">
+    <div class="mx-auto max-w-[1400px] px-4 py-10 md:px-8 md:py-14">
+      <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-rivet)]">
+        Catálogo · 2026
+      </p>
+      <h1
+        class="mt-3 text-4xl font-bold leading-[1.05] tracking-tight text-[var(--color-ink)] md:text-5xl"
+      >
+        Buscá lo que necesitás y consultanos por WhatsApp.
+      </h1>
+      <p class="mt-4 max-w-[58ch] text-base leading-relaxed text-[var(--color-ink-soft)]">
+        Los precios y el stock son orientativos y se confirman al momento de la
+        consulta. Cada tarjeta tiene un botón directo para escribirnos con el producto
+        ya cargado.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-paper)] py-10 md:py-14">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <Catalog
+        client:load
+        products={products}
+        categories={categories}
+        priceBounds={priceBounds}
+      />
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-latex-interior-20l-sherwin">
+  <title id="t-latex-interior-20l-sherwin">Látex interior blanco 20L Sherwin Williams</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="160" y="80" width="240" height="60" fill="#5d544a"/>
+      <polygon points="160,140 400,140 380,460 180,460" fill="#f5f2ea" stroke="#171513" stroke-width="6"/>
+      <rect x="180" y="220" width="200" height="160" fill="#171513"/>
+      <rect x="200" y="240" width="160" height="14" fill="#c28e3f"/>
+      <rect x="200" y="270" width="120" height="10" fill="#f5f2ea"/>
+      <rect x="200" y="290" width="140" height="10" fill="#f5f2ea"/>
+      <rect x="200" y="310" width="100" height="10" fill="#f5f2ea"/>
+      <rect x="200" y="340" width="160" height="20" fill="#c28e3f"/>
+    </g>
+</svg>
