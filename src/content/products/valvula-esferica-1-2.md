@@ -7,6 +7,7 @@ sku: GAS-VES-012
 image: /images/products/valvula-esferica-1-2.svg
 imageAlt: Válvula esférica de ½ pulgada con palanca roja
 featured: false
+bestSeller: false
 tags:
   - válvula
   - esférica

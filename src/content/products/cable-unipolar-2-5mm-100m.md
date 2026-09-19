@@ -7,6 +7,7 @@ sku: ELE-CUN-2.5
 image: /images/products/cable-unipolar-2-5mm-100m.svg
 imageAlt: Bobina de cable unipolar de 2.5 milímetros cuadrados
 featured: false
+bestSeller: false
 tags:
   - cable
   - 2.5mm

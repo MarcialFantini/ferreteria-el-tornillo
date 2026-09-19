@@ -1,8 +1,7 @@
----
+﻿---
 import Layout from "../../layouts/Layout.astro";
 import Catalog, { type CatalogProduct } from "../../components/Catalog.tsx";
 import { getCollection } from "astro:content";
-import { productMessage, whatsappLink } from "../../lib/whatsapp";
 
 const allProducts = await getCollection("products");
 
@@ -16,11 +15,17 @@ const categories = [...new Set(allProducts.map((p) => p.data.category))].sort((a
   a.localeCompare(b, "es"),
 );
 
+const brands = [...new Set(allProducts.map((p) => p.data.brand).filter(Boolean) as string[])].sort((a, b) =>
+  a.localeCompare(b, "es"),
+);
+
 const products: CatalogProduct[] = allProducts.map((p) => ({
   slug: p.id,
   name: p.data.name,
   category: p.data.category,
+  brand: p.data.brand,
   price: p.data.price,
+  comparePrice: p.data.comparePrice,
   stock: p.data.stock,
   sku: p.data.sku,
   image: p.data.image,
@@ -34,38 +39,58 @@ const products: CatalogProduct[] = allProducts.map((p) => ({
   ]
     .join(" ")
     .toLowerCase(),
-  wa: whatsappLink(productMessage(p.data)),
 }));
+
+const offers = products.filter((p) => p.comparePrice && p.comparePrice > p.price).length;
+const totalCount = products.length;
 ---
 
 <Layout
   title="Catálogo · Ferretería El Tornillo"
-  description="Catálogo completo de herramientas, plomería, electricidad y materiales de construcción. Filtrá por categoría y rango de precio."
+  description="Catálogo completo de herramientas, plomería, electricidad y materiales de construcción. Filtrá por categoría, marca y rango de precio."
 >
-  <section class="border-b border-[var(--color-line)] bg-[var(--color-paper)]">
-    <div class="mx-auto max-w-[1400px] px-4 py-10 md:px-8 md:py-14">
-      <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-rivet)]">
-        Catálogo · 2026
-      </p>
-      <h1
-        class="mt-3 text-4xl font-bold leading-[1.05] tracking-tight text-[var(--color-ink)] md:text-5xl"
-      >
-        Buscá lo que necesitás y consultanos por WhatsApp.
-      </h1>
-      <p class="mt-4 max-w-[58ch] text-base leading-relaxed text-[var(--color-ink-soft)]">
-        Los precios y el stock son orientativos y se confirman al momento de la
-        consulta. Cada tarjeta tiene un botón directo para escribirnos con el producto
-        ya cargado.
-      </p>
+  <section class="border-b border-[var(--color-navy)] bg-[var(--color-cream-deep)]">
+    <div class="mx-auto max-w-[1400px] px-4 py-10 md:px-8 md:py-16">
+      <div class="grid grid-cols-1 gap-8 md:grid-cols-12">
+        <div class="md:col-span-8">
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">
+            Catálogo · {new Date().getFullYear()}
+          </p>
+          <h1 class="mt-3 font-display text-4xl font-bold leading-[1.05] tracking-tight text-[var(--color-navy)] md:text-6xl">
+            Lo que tenés que pensar<br />para la <em class="not-italic text-[var(--color-mustard-deep)]">obra</em> que estás por empezar.
+          </h1>
+          <p class="mt-5 max-w-[58ch] text-base leading-relaxed text-[var(--color-navy-muted)]">
+            Filtrá por categoría, marca, rango de precio y disponibilidad. Cada
+            ficha te deja agregar al carrito y armar el pedido por WhatsApp en
+            un mensaje.
+          </p>
+        </div>
+
+        <dl class="md:col-span-4 grid grid-cols-3 gap-2 self-end border-t border-[var(--color-navy)] pt-5 md:border-0 md:pt-0">
+          <div>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Productos</dt>
+            <dd class="mono mt-1 text-3xl font-bold tabular-nums text-[var(--color-navy)]">{String(totalCount).padStart(2, "0")}</dd>
+          </div>
+          <div>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Marcas</dt>
+            <dd class="mono mt-1 text-3xl font-bold tabular-nums text-[var(--color-navy)]">{String(brands.length).padStart(2, "0")}</dd>
+          </div>
+          <div>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Ofertas</dt>
+            <dd class="mono mt-1 text-3xl font-bold tabular-nums text-[var(--color-mustard-deep)]">{String(offers).padStart(2, "0")}</dd>
+          </div>
+        </dl>
+      </div>
     </div>
   </section>
 
-  <section class="bg-[var(--color-paper)] py-10 md:py-14">
+  <section class="bg-[var(--color-cream)] py-10 md:py-14">
     <div class="mx-auto max-w-[1400px] px-4 md:px-8">
       <Catalog
         client:load
         products={products}
         categories={categories}
+        brands={brands}
         priceBounds={priceBounds}
       />
     </div>

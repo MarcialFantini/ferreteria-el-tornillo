@@ -7,6 +7,7 @@ sku: HER-TAL-013
 image: /images/products/taladro-percutor-13mm-gamma.svg
 imageAlt: Taladro percutor 13mm con mandril metálico y empuñadura lateral
 featured: true
+bestSeller: false
 tags:
   - taladro
   - percutor

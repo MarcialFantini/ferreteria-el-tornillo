@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-cerradura-embutir-doble-paleta">
+  <title id="t-cerradura-embutir-doble-paleta">Cerradura embutir doble paleta</title>
+  <rect width="800" height="800" fill="#ebe6d8"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="120" y="120" width="320" height="320" fill="#c28e3f" stroke="#171513" stroke-width="6"/>
+      <rect x="140" y="140" width="280" height="280" fill="#f5f2ea" stroke="#171513" stroke-width="4"/>
+      <circle cx="280" cy="280" r="60" fill="#171513"/>
+      <circle cx="280" cy="280" r="36" fill="#c28e3f"/>
+      <rect x="270" y="220" width="20" height="120" rx="3" fill="#171513"/>
+      <rect x="200" y="400" width="160" height="20" rx="4" fill="#171513"/>
+      <text x="280" y="500" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="22" fill="#171513" font-weight="700">DOBLE PALETA</text>
+    </g>
+</svg>

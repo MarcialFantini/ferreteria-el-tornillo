@@ -7,6 +7,7 @@ sku: MAN-MAR-016
 image: /images/products/martillo-carpintero-16oz-stanley.svg
 imageAlt: Martillo de carpintero con cabeza de acero y mango de madera
 featured: false
+bestSeller: false
 tags:
   - martillo
   - carpintero

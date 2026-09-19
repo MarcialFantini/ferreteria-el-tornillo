@@ -7,6 +7,7 @@ sku: PLO-SRO-125
 image: /images/products/sella-roscas-poxipol-125cc.svg
 imageAlt: Pomo de sellaroscas Poxipol de 125 centímetros cúbicos
 featured: false
+bestSeller: false
 tags:
   - sellaroscas
   - poxipol

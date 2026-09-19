@@ -1,0 +1,215 @@
+﻿---
+/**
+ * /contacto — Página de contacto.
+ */
+import Layout from "../../layouts/Layout.astro";
+import { PHONE_FORMATTED, PHONE_TEL, whatsappLink } from "../../lib/whatsapp";
+
+const phone = PHONE_FORMATTED;
+const phoneTel = PHONE_TEL;
+const email = "mostrador@eltornillo.com.ar";
+
+const channels = [
+  {
+    code: "01",
+    title: "WhatsApp",
+    body: "Es lo más rápido. Te confirmamos stock, precio y horario en el momento. Respondemos en horario de mostrador.",
+    cta: "Escribir ahora",
+    href: whatsappLink("Hola, quiero consultar por un producto."),
+    external: true,
+    meta: "Lun-Vie 08:30 a 19:00 · Sáb 08:30 a 13:30",
+  },
+  {
+    code: "02",
+    title: "Teléfono",
+    body: "Para consultas puntuales o si necesitás hablar con alguien en el mostrador. No siempre atendemos de inmediato.",
+    cta: "Llamar",
+    href: `tel:${phoneTel}`,
+    external: false,
+    meta: phone,
+  },
+  {
+    code: "03",
+    title: "Email",
+    body: "Para presupuestos, facturas o consultas que no son urgentes. Respondemos en el día hábil.",
+    cta: "Enviar email",
+    href: `mailto:${email}?subject=${encodeURIComponent("Consulta desde el catálogo online")}`,
+    external: false,
+    meta: email,
+  },
+];
+
+const hours = [
+  { day: "Lun a Vie", open: "08:30", close: "19:00" },
+  { day: "Sábados", open: "08:30", close: "13:30" },
+  { day: "Domingos", open: "Cerrado", close: "" },
+];
+---
+
+<Layout
+  title="Contacto · Ferretería El Tornillo"
+  description="WhatsApp, teléfono, email y dirección de Ferretería El Tornillo en Ituzaingó. Te respondemos en horario de mostrador."
+>
+  <nav aria-label="Ruta de navegación" class="border-b border-[var(--color-line)] bg-[var(--color-cream-deep)]">
+    <div class="mx-auto flex max-w-[1400px] items-center gap-2 px-4 py-3 text-xs text-[var(--color-navy-muted)] md:px-8">
+      <a href="/" class="hover:text-[var(--color-mustard-deep)]">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-[var(--color-navy)]">Contacto</span>
+    </div>
+  </nav>
+
+  <section class="border-b border-[var(--color-navy)] bg-[var(--color-cream-deep)] blueprint-bg">
+    <div class="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-4 py-16 md:grid-cols-12 md:px-8 md:py-24">
+      <div class="md:col-span-8">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)] fade-up">
+          Contacto
+        </p>
+        <h1 class="mt-3 font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--color-navy)] md:text-6xl fade-up" style="animation-delay: 60ms">
+          Tres formas reales de <em class="not-italic text-[var(--color-mustard-deep)]">hablar</em> con nosotros.
+        </h1>
+        <p class="mt-6 max-w-[60ch] text-lg leading-relaxed text-[var(--color-navy-muted)] fade-up" style="animation-delay: 120ms">
+          No tenemos formulario web porque el mostrador sigue siendo la mejor
+          forma de resolver una duda de ferretería. Pero sí respondemos por
+          mensaje, llamada y mail.
+        </p>
+      </div>
+      <aside class="md:col-span-4 fade-up" style="animation-delay: 200ms">
+        <div class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream)] p-6">
+          <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">
+            Tiempo de respuesta
+          </p>
+          <p class="mt-3 font-display text-2xl leading-tight text-[var(--color-navy)]">
+            Menos de 5 minutos por WhatsApp en horario de mostrador.
+          </p>
+          <p class="mt-2 text-sm text-[var(--color-navy-muted)]">
+            Fuera de horario respondemos a primera hora del día siguiente.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Canales</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Elegí por dónde te queda más cómodo.</h2>
+      </header>
+
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+        {channels.map((c) => (
+          <article class="crosshair group relative flex flex-col border border-[var(--color-navy)] bg-[var(--color-cream)] p-6 transition-colors hover:bg-[var(--color-cream-deep)]">
+            <div class="flex items-baseline justify-between">
+              <span class="mono text-2xl font-bold tabular-nums text-[var(--color-mustard-deep)]">{c.code}</span>
+              <span class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">Canal</span>
+            </div>
+            <h3 class="mt-4 font-display text-2xl font-semibold leading-tight text-[var(--color-navy)]">{c.title}</h3>
+            <p class="mt-3 flex-1 text-sm leading-relaxed text-[var(--color-navy-muted)]">{c.body}</p>
+            <p class="mono mt-3 border-t border-[var(--color-line)] pt-3 text-[10px] uppercase tracking-[0.16em] text-[var(--color-navy)]">{c.meta}</p>
+            <a
+              href={c.href}
+              target={c.external ? "_blank" : undefined}
+              rel={c.external ? "noopener" : undefined}
+              class="mono mt-5 inline-flex items-center justify-center gap-2 bg-[var(--color-navy)] px-4 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)] transition-colors group-hover:bg-[var(--color-mustard)] group-hover:text-[var(--color-navy)]"
+            >
+              {c.cta} <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-cream-deep)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-12">
+        <div class="md:col-span-7">
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Local</p>
+          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Dónde está el mostrador.</h2>
+          <address class="mt-5 not-italic text-lg leading-relaxed text-[var(--color-navy-muted)]">
+            <strong class="text-[var(--color-navy)]">Av. San Martín 4520, Ituzaingó, Buenos Aires</strong><br />
+            <span class="mono text-[12px] uppercase tracking-[0.16em]">Ituzaingó · Buenos Aires · Argentina</span>
+          </address>
+
+          <table class="spec-table mt-8">
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th class="text-right">Horario</th>
+              </tr>
+            </thead>
+            <tbody>
+              {hours.map((h) => (
+                <tr>
+                  <td class="font-medium text-[var(--color-navy)]">{h.day}</td>
+                  <td class="num text-right text-[var(--color-navy-muted)]">
+                    {h.open === "Cerrado" ? "CERRADO" : `${h.open} — ${h.close} HS`}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="md:col-span-5">
+          <div class="crosshair relative overflow-hidden border border-[var(--color-navy)] bg-[var(--color-cream)]">
+            <div class="blueprint-bg flex h-72 flex-col items-center justify-center gap-2 text-center">
+              <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">Croquis</p>
+              <p class="font-display text-xl text-[var(--color-navy)]">Av. San Martín 4520</p>
+              <p class="mono text-[11px] uppercase tracking-[0.16em] text-[var(--color-navy-muted)]">Ituzaingó · a 4 cuadras de la estación</p>
+              <a
+                href="https://maps.google.com/?q=Av.+San+Mart%C3%ADn+4520,+Ituzaing%C3%B3"
+                target="_blank"
+                rel="noopener"
+                class="mono mt-4 inline-flex items-center gap-2 border border-[var(--color-navy)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-navy)] hover:text-[var(--color-cream)]"
+              >
+                Abrir en Google Maps <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+          <p class="mono mt-3 text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">
+            Referencia · a 4 cuadras de la estación de tren Ituzaingó
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Mensaje directo</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">O escribinos directo.</h2>
+        <p class="mt-3 max-w-[60ch] text-sm text-[var(--color-navy-muted)]">
+          Estos atajos abren WhatsApp o tu cliente de email con un mensaje pre-armado.
+          Es la forma más rápida de llegar al mostrador.
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <a
+          href={whatsappLink("Hola, quiero consultar por un producto del catálogo.")}
+          target="_blank"
+          rel="noopener"
+          class="crosshair group flex items-center justify-between border border-[var(--color-navy)] bg-[var(--color-mustard)] p-5 transition-transform hover:translate-y-[-2px]"
+        >
+          <div>
+            <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy)]">WhatsApp · Más rápido</p>
+            <p class="mt-1 font-display text-xl text-[var(--color-navy)]">Hola, quiero consultar por un producto</p>
+          </div>
+          <span aria-hidden="true" class="font-display text-3xl text-[var(--color-navy)] transition-transform group-hover:translate-x-1">→</span>
+        </a>
+        <a
+          href="mailto:mostrador@eltornillo.com.ar?subject=Consulta%20desde%20el%20cat%C3%A1logo%20online"
+          class="crosshair group flex items-center justify-between border border-[var(--color-navy)] bg-[var(--color-cream-deep)] p-5 transition-transform hover:translate-y-[-2px]"
+        >
+          <div>
+            <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">Email · Para presupuestos</p>
+            <p class="mt-1 font-display text-xl text-[var(--color-navy)]">Consulta desde el catálogo online</p>
+          </div>
+          <span aria-hidden="true" class="font-display text-3xl text-[var(--color-navy-muted)] transition-transform group-hover:translate-x-1">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -7,6 +7,7 @@ sku: ELE-CAI-020
 image: /images/products/cinta-aisladora-pvc-20m.svg
 imageAlt: Rollo de cinta aisladora PVC de 20 metros color negro
 featured: false
+bestSeller: false
 tags:
   - cinta
   - aisladora

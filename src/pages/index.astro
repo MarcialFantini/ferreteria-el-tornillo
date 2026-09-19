@@ -1,28 +1,69 @@
----
+﻿---
 import Layout from "../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { whatsappLink, productMessage } from "../lib/whatsapp";
+import { whatsappLink, PHONE_TEL, PHONE_FORMATTED } from "../lib/whatsapp";
 import ProductCard from "../components/ProductCard.astro";
 import { categoryHref } from "../data/categories";
 
 const allProducts = await getCollection("products");
 
+type ProductView = {
+  slug: string;
+  name: string;
+  category: string;
+  brand?: string;
+  price: number;
+  comparePrice?: number;
+  bestSeller: boolean;
+  rating?: number;
+  stock: number;
+  sku: string;
+  image: string;
+  imageAlt: string;
+  featured: boolean;
+};
+
+const productView = (p: (typeof allProducts)[number]): ProductView => ({
+  slug: p.id,
+  name: p.data.name,
+  category: p.data.category,
+  brand: p.data.brand,
+  price: p.data.price,
+  comparePrice: p.data.comparePrice,
+  bestSeller: p.data.bestSeller,
+  rating: p.data.rating,
+  stock: p.data.stock,
+  sku: p.data.sku,
+  image: p.data.image,
+  imageAlt: p.data.imageAlt,
+  featured: p.data.featured,
+});
+
 const featured = allProducts
   .filter((p) => p.data.featured)
   .slice(0, 4)
-  .map((p) => ({
-    slug: p.id,
-    name: p.data.name,
-    category: p.data.category,
-    price: p.data.price,
-    stock: p.data.stock,
-    sku: p.data.sku,
-    image: p.data.image,
-    imageAlt: p.data.imageAlt,
-    featured: p.data.featured,
-  }));
+  .map(productView);
 
-// Categorías con conteo, ordenadas alfabéticamente.
+const ofertas = allProducts
+  .filter((p): p is (typeof allProducts)[number] =>
+    Boolean(p.data.comparePrice && p.data.comparePrice > p.data.price),
+  )
+  .sort((a, b) => {
+    const ca = a.data.comparePrice as number;
+    const cb = b.data.comparePrice as number;
+    const da = (ca - a.data.price) / ca;
+    const db = (cb - b.data.price) / cb;
+    return db - da;
+  })
+  .slice(0, 4)
+  .map(productView);
+
+const masVendidos = allProducts
+  .filter((p) => p.data.bestSeller)
+  .sort((a, b) => (b.data.rating ?? 0) - (a.data.rating ?? 0))
+  .slice(0, 4)
+  .map(productView);
+
 const categoryCounts = new Map<string, number>();
 for (const p of allProducts) {
   categoryCounts.set(p.data.category, (categoryCounts.get(p.data.category) ?? 0) + 1);
@@ -31,9 +72,12 @@ const categories = [...categoryCounts.entries()]
   .sort((a, b) => a[0].localeCompare(b[0], "es"))
   .map(([name, count]) => ({ name, count }));
 
-const wa = whatsappLink(
-  "Hola, quiero consultar por un producto del catálogo online.",
-);
+const wa = whatsappLink("Hola, quiero consultar por un producto del catálogo online.");
+
+const stockBajo = allProducts
+  .filter((p) => p.data.stock > 0 && p.data.stock < 10)
+  .slice(0, 6)
+  .map(productView);
 ---
 
 <Layout
@@ -41,234 +85,274 @@ const wa = whatsappLink(
   description="Ferretería familiar con 40 años en zona oeste de GBA. Mostramos nuestro stock y atendemos consultas por WhatsApp."
 >
   <!-- HERO -->
-  <section class="border-b border-[var(--color-line)] bg-[var(--color-paper)]">
+  <section class="border-b border-[var(--color-navy)] bg-[var(--color-cream-deep)] blueprint-bg">
     <div class="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-4 py-16 md:grid-cols-12 md:px-8 md:py-24">
       <div class="md:col-span-7">
-        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-rivet)]">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)] fade-up">
           Ituzaingó · desde 1985
         </p>
         <h1
-          class="mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-[var(--color-ink)] md:text-6xl"
+          class="mt-4 font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--color-navy)] md:text-6xl fade-up"
+          style="animation-delay: 60ms"
         >
           Herramientas y materiales para la obra que estás
-          <span class="text-[var(--color-rivet)]">empezando hoy</span>.
+          <em class="not-italic text-[var(--color-mustard-deep)]">empezando hoy</em>.
         </h1>
-        <p class="mt-6 max-w-[58ch] text-lg leading-relaxed text-[var(--color-ink-soft)]">
+        <p class="mt-6 max-w-[58ch] text-lg leading-relaxed text-[var(--color-navy-muted)] fade-up" style="animation-delay: 120ms">
           No tenemos tienda online, pero te mostramos lo que hay en el mostrador. Mirá
           el catálogo, elegí lo que te sirve y consultanos por WhatsApp antes de venir.
           Te confirmamos stock, precio y horario.
         </p>
-
-        <div class="mt-8 flex flex-wrap items-center gap-3">
+        <div class="mt-8 flex flex-wrap items-center gap-3 fade-up" style="animation-delay: 180ms">
           <a
             href="/productos"
-            class="inline-flex items-center gap-2 rounded-full bg-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-paper)] transition-colors hover:bg-[var(--color-rivet)] active:scale-[0.98]"
+            class="mono inline-flex items-center gap-2 bg-[var(--color-navy)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)] transition-colors hover:bg-[var(--color-mustard)] hover:text-[var(--color-navy)] active:scale-[0.98]"
           >
             Ver catálogo completo
             <span aria-hidden="true">→</span>
           </a>
           <a
-            href={wa}
-            target="_blank"
-            rel="noopener"
-            class="inline-flex items-center gap-2 rounded-full border border-[var(--color-ink)] px-5 py-3 text-sm font-semibold text-[var(--color-ink)] transition-colors hover:border-[var(--color-rivet)] hover:text-[var(--color-rivet)] active:scale-[0.98]"
+            href="/donde-encontrarnos"
+            class="mono inline-flex items-center gap-2 border border-[var(--color-navy)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)] transition-colors hover:border-[var(--color-mustard)] hover:text-[var(--color-mustard-deep)] active:scale-[0.98]"
           >
-            <svg
-              aria-hidden="true"
-              viewBox="0 0 24 24"
-              width="16"
-              height="16"
-              fill="currentColor"
-            >
-              <path
-                d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.46 0 .12 5.34.12 11.92c0 2.1.55 4.16 1.6 5.96L0 24l6.28-1.64a11.92 11.92 0 0 0 5.76 1.47h.01c6.58 0 11.92-5.34 11.92-11.92 0-3.18-1.24-6.18-3.45-8.43z"
-              ></path>
-            </svg>
-            Consultar por WhatsApp
+            Dónde estamos
           </a>
         </div>
 
-        <dl class="mt-10 grid grid-cols-3 gap-4 border-t border-[var(--color-line)] pt-6">
+        <dl class="mt-10 grid grid-cols-3 gap-4 border-t border-[var(--color-navy)] pt-6 fade-up" style="animation-delay: 240ms">
           <div>
-            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-              Años
-            </dt>
-            <dd class="mt-1 text-2xl font-bold tracking-tight text-[var(--color-ink)] md:text-3xl">
-              40
-            </dd>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Años</dt>
+            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl tabular-nums">40</dd>
           </div>
           <div>
-            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-              Productos en catálogo
-            </dt>
-            <dd class="mt-1 text-2xl font-bold tracking-tight text-[var(--color-ink)] md:text-3xl">
-              {allProducts.length}
-            </dd>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">En catálogo</dt>
+            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl tabular-nums">{String(allProducts.length).padStart(3, "0")}</dd>
           </div>
           <div>
-            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-              Categorías
-            </dt>
-            <dd class="mt-1 text-2xl font-bold tracking-tight text-[var(--color-ink)] md:text-3xl">
-              {categories.length}
-            </dd>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Categorías</dt>
+            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl tabular-nums">{String(categories.length).padStart(2, "0")}</dd>
           </div>
         </dl>
       </div>
 
-      <!-- Tarjeta visual del lado derecho: blueprint / placa técnica -->
-      <div class="md:col-span-5">
-        <div
-          class="relative aspect-square overflow-hidden rounded-3xl border border-[var(--color-ink)] bg-[var(--color-paper-deep)] p-6 md:aspect-[4/5]"
-        >
-          <div
-            aria-hidden="true"
-            class="absolute inset-0 opacity-20"
-            style={`background-image: linear-gradient(to right, var(--color-line) 1px, transparent 1px), linear-gradient(to bottom, var(--color-line) 1px, transparent 1px); background-size: 24px 24px;`}
+      <aside class="md:col-span-5 fade-up" style="animation-delay: 280ms">
+        <div class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream)] p-6">
+          <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">
+            Cómo se trabaja acá
+          </p>
+          <p class="mt-3 font-display text-xl leading-snug text-[var(--color-navy)]">
+            Mostrador atendido, catálogo online y pedido por WhatsApp.
+            <span class="text-[var(--color-mustard-deep)]">Sin tienda online.</span>
+          </p>
+          <ol class="mt-5 space-y-3 text-sm">
+            <li class="flex gap-3 border-b border-[var(--color-line)] pb-3">
+              <span aria-hidden="true" class="mono shrink-0 text-base font-bold text-[var(--color-mustard-deep)]">01</span>
+              <span class="text-[var(--color-navy-muted)]">Mirá el catálogo y filtrá por categoría, marca y precio.</span>
+            </li>
+            <li class="flex gap-3 border-b border-[var(--color-line)] pb-3">
+              <span aria-hidden="true" class="mono shrink-0 text-base font-bold text-[var(--color-mustard-deep)]">02</span>
+              <span class="text-[var(--color-navy-muted)]">Agregá al carrito o consultá directo por WhatsApp.</span>
+            </li>
+            <li class="flex gap-3">
+              <span aria-hidden="true" class="mono shrink-0 text-base font-bold text-[var(--color-mustard-deep)]">03</span>
+              <span class="text-[var(--color-navy-muted)]">Pasás por el local, retirás y te ayudamos con la instalación.</span>
+            </li>
+          </ol>
+          <a
+            href="/envios"
+            class="mono mt-6 inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--color-navy)] hover:text-[var(--color-mustard-deep)]"
           >
-          </div>
-          <div
-            aria-hidden="true"
-            class="absolute left-3 top-3 h-6 w-6 border-l-2 border-t-2 border-[var(--color-ink)]"
-          >
-          </div>
-          <div
-            aria-hidden="true"
-            class="absolute right-3 top-3 h-6 w-6 border-r-2 border-t-2 border-[var(--color-ink)]"
-          >
-          </div>
-          <div
-            aria-hidden="true"
-            class="absolute bottom-3 left-3 h-6 w-6 border-b-2 border-l-2 border-[var(--color-ink)]"
-          >
-          </div>
-          <div
-            aria-hidden="true"
-            class="absolute bottom-3 right-3 h-6 w-6 border-b-2 border-r-2 border-[var(--color-ink)]"
-          >
-          </div>
-
-          <div class="relative flex h-full flex-col justify-between">
-            <div>
-              <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-iron)]">
-                Ficha · Catálogo 2026
-              </p>
-              <p class="mt-2 text-sm text-[var(--color-ink-soft)]">
-                Stock actualizado en mostrador.
-              </p>
-            </div>
-
-            <div class="grid grid-cols-2 gap-3 text-sm">
-              <div class="border-t border-[var(--color-ink)] pt-2">
-                <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-                  Lu a Vi
-                </p>
-                <p class="mono mt-1 text-base font-bold text-[var(--color-ink)]">08:30 — 19:00</p>
-              </div>
-              <div class="border-t border-[var(--color-ink)] pt-2">
-                <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-                  Sábados
-                </p>
-                <p class="mono mt-1 text-base font-bold text-[var(--color-ink)]">08:30 — 13:30</p>
-              </div>
-              <div class="col-span-2 border-t border-[var(--color-ink)] pt-2">
-                <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-                  Zona
-                </p>
-                <p class="mt-1 text-base font-semibold text-[var(--color-ink)]">
-                  Ituzaingó · Zona Oeste GBA
-                </p>
-              </div>
-            </div>
-          </div>
+            Ver zonas de envío <span aria-hidden="true">→</span>
+          </a>
         </div>
-      </div>
+      </aside>
     </div>
   </section>
 
+  <!-- OFERTAS -->
+  {ofertas.length > 0 && (
+    <section class="border-b border-[var(--color-line)] bg-[var(--color-mustard)]/10 py-16 md:py-24">
+      <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+        <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">
+              Sección 02 · Ofertas vigentes
+            </p>
+            <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">
+              Lo que está con precio roto.
+            </h2>
+            <p class="mt-2 max-w-[60ch] text-sm text-[var(--color-navy-muted)]">
+              Precios anteriores tachados. Aplican hasta agotar stock del lote.
+            </p>
+          </div>
+          <a
+            href="/productos?deals=1"
+            class="mono inline-flex items-center gap-2 border border-[var(--color-navy)] bg-[var(--color-navy)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)] transition-colors hover:bg-[var(--color-mustard)] hover:text-[var(--color-navy)]"
+          >
+            Ver todas las ofertas <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {ofertas.map((p) => (
+            <li>
+              <ProductCard product={p} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
   <!-- CATEGORÍAS -->
-  <section id="categorias" class="border-b border-[var(--color-line)] bg-[var(--color-paper)] py-16 md:py-24">
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
     <div class="mx-auto max-w-[1400px] px-4 md:px-8">
       <div class="mb-8 flex items-end justify-between gap-4">
         <div>
-          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-iron)]">
-            Sección 02
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">
+            Sección 03 · Rubros
           </p>
-          <h2 class="mt-2 text-3xl font-bold tracking-tight text-[var(--color-ink)] md:text-4xl">
-            Lo que vas a encontrar
+          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">
+            Lo que vas a encontrar.
           </h2>
         </div>
         <a
           href="/categorias"
-          class="mono hidden text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)] hover:text-[var(--color-rivet)] md:inline"
+          class="mono hidden text-[11px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)] hover:text-[var(--color-mustard-deep)] md:inline"
         >
           Ver todas →
         </a>
       </div>
 
       <ul class="grid grid-cols-2 gap-3 md:grid-cols-4">
-        {
-          categories.map((c) => (
-            <li>
-              <a
-                href={categoryHref(c.name)}
-                class="flex h-full flex-col justify-between rounded-xl border border-[var(--color-line)] bg-[var(--color-paper)] p-4 transition-colors hover:border-[var(--color-ink)]"
-              >
-                <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-                  {String(c.count).padStart(2, "0")} ítems
-                </p>
-                <p class="mt-2 text-base font-semibold leading-snug text-[var(--color-ink)]">
-                  {c.name}
-                </p>
-              </a>
-            </li>
-          ))
-        }
+        {categories.map((c) => (
+          <li>
+            <a
+              href={categoryHref(c.name)}
+              class="flex h-full flex-col justify-between border border-[var(--color-navy)] bg-[var(--color-cream)] p-4 transition-colors hover:bg-[var(--color-navy)] hover:text-[var(--color-cream)]"
+            >
+              <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">
+                {String(c.count).padStart(2, "0")} ítems
+              </p>
+              <p class="mt-2 font-display text-base font-semibold leading-snug">
+                {c.name}
+              </p>
+            </a>
+          </li>
+        ))}
       </ul>
     </div>
   </section>
 
+  <!-- MÁS VENDIDOS -->
+  {masVendidos.length > 0 && (
+    <section class="border-y border-[var(--color-navy)] bg-[var(--color-navy)] py-16 text-[var(--color-cream)] md:py-24">
+      <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+        <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard)]">
+              Sección 04 · Más vendidos
+            </p>
+            <h2 class="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">
+              Lo que se repite en la compra del lunes.
+            </h2>
+            <p class="mt-2 max-w-[60ch] text-sm text-[var(--color-line-soft)]">
+              Selección editorial de los productos que más rotan en mostrador y que los clientes vuelven a buscar.
+            </p>
+          </div>
+          <a
+            href="/productos"
+            class="mono inline-flex items-center gap-2 border border-[var(--color-mustard)] bg-[var(--color-mustard)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)] transition-colors hover:bg-transparent hover:text-[var(--color-mustard)]"
+          >
+            Ver catálogo completo <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {masVendidos.map((p) => (
+            <li>
+              <ProductCard product={p} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <!-- ÚLTIMAS UNIDADES -->
+  {stockBajo.length > 0 && (
+    <section class="bg-[var(--color-cream-deep)] py-16 md:py-24">
+      <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+        <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mark)]">
+              Sección 05 · Stock crítico
+            </p>
+            <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">
+              Últimas unidades en mostrador.
+            </h2>
+            <p class="mt-2 max-w-[60ch] text-sm text-[var(--color-navy-muted)]">
+              Cuando se acaban, no los conseguimos en el día. Confirmá por WhatsApp antes de venir.
+            </p>
+          </div>
+          <a
+            href="/productos?stock=low"
+            class="mono inline-flex items-center gap-2 border border-[var(--color-mark)] bg-[var(--color-mark)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)] transition-colors hover:bg-transparent hover:text-[var(--color-mark)]"
+          >
+            Ver stock bajo <span aria-hidden="true">→</span>
+          </a>
+        </div>
+
+        <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          {stockBajo.map((p) => (
+            <li>
+              <ProductCard product={p} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
   <!-- DESTACADOS -->
-  <section class="bg-[var(--color-paper)] py-16 md:py-24">
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
     <div class="mx-auto max-w-[1400px] px-4 md:px-8">
       <div class="mb-8 flex items-end justify-between gap-4">
         <div>
-          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-iron)]">
-            Sección 03
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">
+            Sección 06 · Destacados del mes
           </p>
-          <h2 class="mt-2 text-3xl font-bold tracking-tight text-[var(--color-ink)] md:text-4xl">
-            Lo más consultado esta semana
+          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">
+            Lo más consultado esta semana.
           </h2>
         </div>
         <a
           href="/productos"
-          class="mono hidden text-[11px] uppercase tracking-[0.18em] text-[var(--color-ink-soft)] hover:text-[var(--color-rivet)] md:inline"
+          class="mono hidden text-[11px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)] hover:text-[var(--color-mustard-deep)] md:inline"
         >
           Ver catálogo →
         </a>
       </div>
 
       <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {
-          featured.map((p) => (
-            <li>
-              <ProductCard product={p} />
-            </li>
-          ))
-        }
+        {featured.map((p) => (
+          <li>
+            <ProductCard product={p} />
+          </li>
+        ))}
       </ul>
     </div>
   </section>
 
   <!-- CTA WhatsApp -->
-  <section class="border-t border-[var(--color-line)] bg-[var(--color-ink)] py-16 text-[var(--color-paper)] md:py-24">
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-16 text-[var(--color-cream)] md:py-24">
     <div class="mx-auto max-w-[1400px] px-4 md:px-8">
       <div class="grid grid-cols-1 items-center gap-10 md:grid-cols-12">
         <div class="md:col-span-7">
-          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-amber)]">
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard)]">
             Antes de venir
           </p>
-          <h2 class="mt-3 text-3xl font-bold leading-tight md:text-5xl">
+          <h2 class="mt-3 font-display text-3xl font-bold leading-tight md:text-5xl">
             Si no querés perder el viaje, escribinos primero.
           </h2>
           <p class="mt-4 max-w-[60ch] text-lg leading-relaxed text-[var(--color-line-soft)]">
@@ -283,7 +367,7 @@ const wa = whatsappLink(
               href={wa}
               target="_blank"
               rel="noopener"
-              class="inline-flex items-center justify-center gap-2 rounded-full bg-[var(--color-rivet)] px-6 py-4 text-base font-semibold text-[var(--color-paper)] transition-colors hover:bg-[var(--color-rivet-deep)] active:scale-[0.98]"
+              class="mono inline-flex items-center justify-center gap-2 bg-[var(--color-mustard)] px-6 py-4 text-base font-semibold text-[var(--color-navy)] transition-colors hover:bg-[var(--color-mustard-deep)] active:scale-[0.98]"
             >
               <svg
                 aria-hidden="true"
@@ -299,10 +383,10 @@ const wa = whatsappLink(
               Abrir WhatsApp
             </a>
             <a
-              href="tel:+5491145678900"
-              class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-line-soft)] px-6 py-4 text-base font-semibold text-[var(--color-paper)] transition-colors hover:border-[var(--color-rivet)] hover:text-[var(--color-rivet)]"
+              href={`tel:${PHONE_TEL}`}
+              class="mono inline-flex items-center justify-center gap-2 border border-[var(--color-line-soft)] px-6 py-4 text-base font-semibold text-[var(--color-cream)] transition-colors hover:border-[var(--color-mustard)] hover:text-[var(--color-mustard)]"
             >
-              +54 9 11 4567-8900
+              {PHONE_FORMATTED}
             </a>
           </div>
         </div>

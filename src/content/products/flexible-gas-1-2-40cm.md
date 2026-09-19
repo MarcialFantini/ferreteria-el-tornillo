@@ -7,6 +7,7 @@ sku: GAS-FLG-140
 image: /images/products/flexible-gas-1-2-40cm.svg
 imageAlt: Flexible mallado para conexión de gas de 40 centímetros
 featured: false
+bestSeller: false
 tags:
   - flexible
   - gas

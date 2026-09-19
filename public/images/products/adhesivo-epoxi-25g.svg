@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-adhesivo-epoxi-25g">
+  <title id="t-adhesivo-epoxi-25g">Adhesivo epoxi bicomponente 25g Poxipol</title>
+  <rect width="800" height="800" fill="#ebe6d8"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="120" y="200" width="120" height="280" rx="6" fill="#171513"/>
+      <rect x="240" y="200" width="120" height="280" rx="6" fill="#5d544a"/>
+      <rect x="140" y="220" width="80" height="40" fill="#c28e3f"/>
+      <rect x="260" y="220" width="80" height="40" fill="#c28e3f"/>
+      <text x="180" y="370" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="44" fill="#f5f2ea" font-weight="800">A</text>
+      <text x="300" y="370" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="44" fill="#f5f2ea" font-weight="800">B</text>
+      <rect x="120" y="480" width="240" height="20" fill="#c28e3f"/>
+      <rect x="380" y="200" width="160" height="280" rx="20" fill="#f5f2ea" stroke="#171513" stroke-width="6"/>
+      <text x="460" y="280" text-anchor="middle" font-family="Plus Jakarta Sans, sans-serif" font-size="20" font-weight="800" fill="#171513">EPOXI</text>
+      <text x="460" y="320" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="28" fill="#171513" font-weight="700">25 g</text>
+      <text x="460" y="360" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#171513">5 min</text>
+      <line x1="380" y1="380" x2="540" y2="380" stroke="#171513" stroke-width="2"/>
+      <text x="460" y="410" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="14" fill="#171513">BICOMPONENTE</text>
+    </g>
+</svg>

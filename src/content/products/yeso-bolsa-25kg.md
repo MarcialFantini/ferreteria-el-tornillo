@@ -7,6 +7,7 @@ sku: CON-YES-025
 image: /images/products/yeso-bolsa-25kg.svg
 imageAlt: Bolsa de papel de 25 kilogramos de yeso
 featured: false
+bestSeller: false
 tags:
   - yeso
   - 25kg

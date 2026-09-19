@@ -1,9 +1,10 @@
----
+﻿---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection, render } from "astro:content";
 import { formatPrice, stockLabel } from "../../lib/format";
-import { whatsappLink, productMessage } from "../../lib/whatsapp";
+import { whatsappLink, productMessage, PHONE_TEL } from "../../lib/whatsapp";
 import ProductCard from "../../components/ProductCard.astro";
+import Reviews from "../../components/Reviews.tsx";
 import { categoryHref } from "../../data/categories";
 
 export async function getStaticPaths() {
@@ -39,6 +40,11 @@ const related = all
     imageAlt: p.data.imageAlt,
     featured: p.data.featured,
   }));
+
+const discount =
+  product.data.comparePrice && product.data.comparePrice > product.data.price
+    ? Math.round(((product.data.comparePrice - product.data.price) / product.data.comparePrice) * 100)
+    : 0;
 ---
 
 <Layout
@@ -47,29 +53,29 @@ const related = all
 >
   <nav
     aria-label="Ruta de navegación"
-    class="border-b border-[var(--color-line)] bg-[var(--color-paper)]"
+    class="border-b border-[var(--color-line)] bg-[var(--color-cream-deep)]"
   >
     <div
-      class="mx-auto flex max-w-[1400px] items-center gap-2 px-4 py-3 text-xs text-[var(--color-ink-soft)] md:px-8"
+      class="mx-auto flex max-w-[1400px] items-center gap-2 px-4 py-3 text-xs text-[var(--color-navy-muted)] md:px-8"
     >
-      <a href="/" class="hover:text-[var(--color-rivet)]">Inicio</a>
+      <a href="/" class="hover:text-[var(--color-mustard-deep)]">Inicio</a>
       <span aria-hidden="true">/</span>
-      <a href="/productos" class="hover:text-[var(--color-rivet)]">Catálogo</a>
+      <a href="/productos" class="hover:text-[var(--color-mustard-deep)]">Catálogo</a>
       <span aria-hidden="true">/</span>
       <a
         href={categoryHref(product.data.category)}
-        class="hover:text-[var(--color-rivet)]">{product.data.category}</a
+        class="hover:text-[var(--color-mustard-deep)]">{product.data.category}</a
       >
       <span aria-hidden="true">/</span>
-      <span class="truncate text-[var(--color-ink)]">{product.data.name}</span>
+      <span class="truncate text-[var(--color-navy)]">{product.data.name}</span>
     </div>
   </nav>
 
-  <section class="bg-[var(--color-paper)] py-10 md:py-16">
+  <section class="bg-[var(--color-cream)] py-10 md:py-16">
     <div class="mx-auto grid max-w-[1400px] grid-cols-1 gap-10 px-4 md:grid-cols-12 md:px-8">
       <div class="md:col-span-6">
         <div
-          class="overflow-hidden rounded-3xl border border-[var(--color-line)] bg-[var(--color-paper-deep)]"
+          class="crosshair relative overflow-hidden border border-[var(--color-navy)] bg-[var(--color-cream-deep)]"
         >
           <img
             src={product.data.image}
@@ -78,61 +84,75 @@ const related = all
             height="800"
             class="aspect-square w-full object-cover"
           />
+          {discount > 0 && (
+            <span class="mono pulse-mustard absolute left-4 top-4 inline-flex items-center bg-[var(--color-mustard)] px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--color-navy)]">
+              -{discount}% · Oferta
+            </span>
+          )}
         </div>
+
+        <dl class="mt-6 grid grid-cols-3 gap-3">
+          <div class="border border-[var(--color-line)] bg-[var(--color-cream-deep)] p-3">
+            <dt class="mono text-[9px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">SKU</dt>
+            <dd class="mono mt-1 text-[13px] tabular-nums text-[var(--color-navy)]">{product.data.sku}</dd>
+          </div>
+          {product.data.brand && (
+            <div class="border border-[var(--color-line)] bg-[var(--color-cream-deep)] p-3">
+              <dt class="mono text-[9px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Marca</dt>
+              <dd class="mono mt-1 text-[13px] text-[var(--color-navy)]">{product.data.brand}</dd>
+            </div>
+          )}
+          {product.data.rating && (
+            <div class="border border-[var(--color-line)] bg-[var(--color-cream-deep)] p-3">
+              <dt class="mono text-[9px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Rating</dt>
+              <dd class="mono mt-1 text-[13px] tabular-nums text-[var(--color-navy)]">★ {product.data.rating.toFixed(1)}</dd>
+            </div>
+          )}
+        </dl>
       </div>
 
       <div class="md:col-span-6">
-        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-iron)]">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">
           {product.data.category}
         </p>
         <h1
-          class="mt-3 text-3xl font-bold leading-tight tracking-tight text-[var(--color-ink)] md:text-4xl"
+          class="mt-3 font-display text-3xl font-bold leading-tight tracking-tight text-[var(--color-navy)] md:text-4xl"
         >
           {product.data.name}
         </h1>
 
         <dl class="mt-6 grid grid-cols-2 gap-4 border-y border-[var(--color-line)] py-4">
           <div>
-            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">
               Precio
             </dt>
-            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-ink)]">
+            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-navy)] tabular-nums">
               {formatPrice(product.data.price)}
             </dd>
+            {discount > 0 && (
+              <p class="mono mt-1 text-[11px] text-[var(--color-navy-muted)] line-through tabular-nums">
+                antes {formatPrice(product.data.comparePrice!)}
+              </p>
+            )}
           </div>
           <div>
-            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">
               Stock
             </dt>
             <dd
               class:list={[
                 "mono mt-1 text-base font-semibold uppercase tracking-[0.16em]",
-                stock.tone === "out" && "text-[var(--color-rivet)]",
-                stock.tone === "low" && "text-[var(--color-amber)]",
-                stock.tone === "ok" && "text-[var(--color-ink-soft)]",
+                stock.tone === "out" && "text-[var(--color-mark)]",
+                stock.tone === "low" && "text-[var(--color-mustard-deep)]",
+                stock.tone === "ok" && "text-[var(--color-sage)]",
               ]}
             >
               {stock.label}
             </dd>
+            <p class="mono mt-1 text-[10px] uppercase tracking-[0.16em] text-[var(--color-navy-muted)]">
+              Confirmamos por WhatsApp
+            </p>
           </div>
-          <div>
-            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-              SKU
-            </dt>
-            <dd class="mono mt-1 text-base text-[var(--color-ink-soft)]">
-              {product.data.sku}
-            </dd>
-          </div>
-          {product.data.brand && (
-            <div>
-              <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-iron)]">
-                Marca
-              </dt>
-              <dd class="mt-1 text-base text-[var(--color-ink-soft)]">
-                {product.data.brand}
-              </dd>
-            </div>
-          )}
         </dl>
 
         <div class="mt-6 flex flex-col gap-3 sm:flex-row">
@@ -140,7 +160,7 @@ const related = all
             href={wa}
             target="_blank"
             rel="noopener"
-            class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[var(--color-rivet)] px-6 py-4 text-base font-semibold text-[var(--color-paper)] transition-colors hover:bg-[var(--color-rivet-deep)] active:scale-[0.98]"
+            class="mono inline-flex flex-1 items-center justify-center gap-2 bg-[var(--color-mustard)] px-6 py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-mustard-deep)] active:scale-[0.98]"
           >
             <svg
               aria-hidden="true"
@@ -156,23 +176,23 @@ const related = all
             Consultar por WhatsApp
           </a>
           <a
-            href="tel:+5491145678900"
-            class="inline-flex items-center justify-center gap-2 rounded-full border border-[var(--color-ink)] px-6 py-4 text-base font-semibold text-[var(--color-ink)] transition-colors hover:border-[var(--color-rivet)] hover:text-[var(--color-rivet)]"
+            href={`tel:${PHONE_TEL}`}
+            class="mono inline-flex items-center justify-center gap-2 border border-[var(--color-navy)] px-6 py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-navy)] hover:text-[var(--color-cream)]"
           >
             Llamar al local
           </a>
         </div>
 
-        <div class="mt-4 flex items-center justify-between gap-3">
+        <div class="mt-4 flex items-center justify-between gap-3 border-t border-[var(--color-line)] pt-4">
           <a
             href="/productos"
-            class="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--color-steel-soft)] hover:text-[var(--color-rivet)]"
+            class="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)] hover:text-[var(--color-navy)]"
           >
             <span aria-hidden="true">←</span> Volver al catálogo
           </a>
           <a
             href={categoryHref(product.data.category)}
-            class="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--color-steel-soft)] hover:text-[var(--color-rivet)]"
+            class="mono inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)] hover:text-[var(--color-navy)]"
           >
             Más de {product.data.category}
             <span aria-hidden="true">→</span>
@@ -180,11 +200,37 @@ const related = all
         </div>
 
         <div
-          class="prose mt-8 max-w-[60ch] text-[var(--color-ink-soft)] [&_p]:mb-4 [&_p]:leading-relaxed"
+          class="prose mt-8 max-w-[60ch] text-[var(--color-navy-muted)] [&_p]:mb-4 [&_p]:leading-relaxed [&_strong]:text-[var(--color-navy)]"
         >
           <Content />
         </div>
+
+        {product.data.tags && product.data.tags.length > 0 && (
+          <div class="mt-6 border-t border-[var(--color-line)] pt-4">
+            <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">
+              Etiquetas
+            </p>
+            <ul class="mt-2 flex flex-wrap gap-1.5">
+              {product.data.tags.map((t) => (
+                <li class="border border-[var(--color-navy)] bg-[var(--color-cream-deep)] px-2 py-0.5 mono text-[10px] uppercase tracking-[0.16em] text-[var(--color-navy)]">
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-cream-deep)] py-10 md:py-14">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <Reviews
+        client:load
+        slug={product.id}
+        productName={product.data.name}
+        seedRating={product.data.rating ?? 4.6}
+      />
     </div>
   </section>
 
@@ -192,10 +238,10 @@ const related = all
     related.length > 0 && (
       <section class="border-t border-[var(--color-line)] py-16 md:py-24">
         <div class="mx-auto max-w-[1400px] px-4 md:px-8">
-          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-iron)]">
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">
             Otros de la misma categoría
           </p>
-          <h2 class="mt-2 text-2xl font-bold tracking-tight text-[var(--color-ink)] md:text-3xl">
+          <h2 class="mt-2 font-display text-2xl font-bold tracking-tight text-[var(--color-navy)] md:text-3xl">
             Más en {product.data.category}
           </h2>
           <ul class="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

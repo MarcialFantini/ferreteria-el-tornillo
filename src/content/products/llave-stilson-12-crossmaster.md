@@ -7,6 +7,7 @@ sku: MAN-LLS-012
 image: /images/products/llave-stilson-12-crossmaster.svg
 imageAlt: Llave stilson de 12 pulgadas con mordaza dentada
 featured: false
+bestSeller: false
 tags:
   - stilson
   - 12 pulgadas

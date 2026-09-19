@@ -7,6 +7,7 @@ sku: ELE-TLD-118
 image: /images/products/tubo-led-18w-philips.svg
 imageAlt: Tubo LED T8 de 18 watts con casquillo G13
 featured: false
+bestSeller: false
 tags:
   - tubo
   - led

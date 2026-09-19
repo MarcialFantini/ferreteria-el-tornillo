@@ -7,6 +7,7 @@ sku: CON-PAF-004
 image: /images/products/pintura-asfaltica-4l.svg
 imageAlt: Balde de pintura asfáltica de 4 litros color negro
 featured: false
+bestSeller: false
 tags:
   - asfáltica
   - 4 litros

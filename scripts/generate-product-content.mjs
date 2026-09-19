@@ -1,10 +1,11 @@
 // scripts/generate-product-content.mjs
-// Genera los 19 markdown de productos en src/content/products/.
+// Genera los markdown de productos en src/content/products/.
 // Cada uno con frontmatter conforme al schema + descripción larga.
+// Idempotente: corre de nuevo si agregás productos.
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const outDir = join(__dirname, "..", "src", "content", "products");
@@ -23,8 +24,9 @@ const PRODUCTS = [
     tags: ["taladro", "percutor", "13mm", "gamma", "750w"],
     brand: "Gamma",
     publishedAt: "2026-01-12",
-    description: "Taladro percutor con mandril de 13mm y motor de 750W. Caja de engranajes metálica y empuñadura lateral con tope de profundidad. Incluye juego de mechas y maletín plástico.\n\nRecomendado para mampostería, madera y metal delgado. Velocidad variable con inversión de giro y bloqueo de gatillo para uso continuo. Servicio técnico en zona oeste.",
-  },
+    description:
+      "Taladro percutor con mandril de 13mm y motor de 750W. Caja de engranajes metálica y empuñadura lateral con tope de profundidad. Incluye juego de mechas y maletín plástico.\n\nRecomendado para mampostería, madera y metal delgado. Velocidad variable con inversión de giro y bloqueo de gatillo para uso continuo. Servicio técnico en zona oeste.",
+    },
   {
     slug: "amoladora-angular-4-bosch",
     name: "Amoladora angular 4½\" 820W",
@@ -38,8 +40,9 @@ const PRODUCTS = [
     tags: ["amoladora", "angular", "bosch", "820w", "4 pulgadas"],
     brand: "Bosch",
     publishedAt: "2026-01-15",
-    description: "Amoladora angular de 4½ pulgadas con motor de 820W. Cabezal de aluminio, carcasa antichoque y empuñadura antivibración. Incluye guarda protectora y llave de ajuste.\n\nPara corte de metal, desbaste y lijado con disco flap. Compatible con todos los discos estándar de 115mm. Repuestos y carbones disponibles en el local.",
-  },
+    description:
+      "Amoladora angular de 4½ pulgadas con motor de 820W. Cabezal de aluminio, carcasa antichoque y empuñadura antivibración. Incluye guarda protectora y llave de ajuste.\n\nPara corte de metal, desbaste y lijado con disco flap. Compatible con todos los discos estándar de 115mm. Repuestos y carbones disponibles en el local.",
+    },
   {
     slug: "llave-stilson-12-crossmaster",
     name: "Llave stilson 12\"",
@@ -49,12 +52,12 @@ const PRODUCTS = [
     sku: "MAN-LLS-012",
     image: "/images/products/llave-stilson-12-crossmaster.svg",
     imageAlt: "Llave stilson de 12 pulgadas con mordaza dentada",
-    featured: false,
     tags: ["stilson", "12 pulgadas", "plomería", "cruzmaster"],
     brand: "Crossmaster",
     publishedAt: "2026-01-10",
-    description: "Llave stilson de 12 pulgadas con cuerpo de hierro fundido y mordaza templada. Apertura hasta 65mm, ideal para caños de gas y plomería pesada.\n\nMango ergonómico con pintura antideslizante. La mordaza inferior se ajusta manualmente para apretar o aflojar.",
-  },
+    description:
+      "Llave stilson de 12 pulgadas con cuerpo de hierro fundido y mordaza templada. Apertura hasta 65mm, ideal para caños de gas y plomería pesada.\n\nMango ergonómico con pintura antideslizante. La mordaza inferior se ajusta manualmente para apretar o aflojar.",
+    },
   {
     slug: "juego-llaves-allen-milimetricas",
     name: "Juego de llaves Allen milimétricas x8",
@@ -64,12 +67,12 @@ const PRODUCTS = [
     sku: "MAN-LAL-008",
     image: "/images/products/juego-llaves-allen-milimetricas.svg",
     imageAlt: "Juego de ocho llaves Allen hexagonales en estuche",
-    featured: false,
     tags: ["allen", "milimétricas", "hexagonales", "juego"],
     brand: "Stanley",
     publishedAt: "2026-01-08",
-    description: "Juego de 8 llaves Allen milimétricas (1.5 a 10mm) en estuche plástico con broche. Acero al cromo vanadio, terminación niquelada.\n\nLas medidas vienen grabadas en cada llave para rápida identificación. Sirve para muebles, electrodomésticos y armado de equipos.",
-  },
+    description:
+      "Juego de 8 llaves Allen milimétricas (1.5 a 10mm) en estuche plástico con broche. Acero al cromo vanadio, terminación niquelada.\n\nLas medidas vienen grabadas en cada llave para rápida identificación. Sirve para muebles, electrodomésticos y armado de equipos.",
+    },
   {
     slug: "martillo-carpintero-16oz-stanley",
     name: "Martillo carpintero 16oz",
@@ -79,12 +82,12 @@ const PRODUCTS = [
     sku: "MAN-MAR-016",
     image: "/images/products/martillo-carpintero-16oz-stanley.svg",
     imageAlt: "Martillo de carpintero con cabeza de acero y mango de madera",
-    featured: false,
     tags: ["martillo", "carpintero", "16oz", "stanley", "mango madera"],
     brand: "Stanley",
     publishedAt: "2026-01-05",
-    description: "Martillo de carpintero de 16 onzas con cabeza de acero forjado y mango de madera de nogal americano. Cuña metálica para fijación del cabo.\n\nLa uña curva arranca clavos sin romper la madera. Cabeza barnizada para evitar oxidación.",
-  },
+    description:
+      "Martillo de carpintero de 16 onzas con cabeza de acero forjado y mango de madera de nogal americano. Cuña metálica para fijación del cabo.\n\nLa uña curva arranca clavos sin romper la madera. Cabeza barnizada para evitar oxidación.",
+    },
   {
     slug: "canio-pvc-110mm-4m",
     name: "Caño PVC 110mm x 4m",
@@ -94,11 +97,26 @@ const PRODUCTS = [
     sku: "PLO-CPV-110",
     image: "/images/products/canio-pvc-110mm-4m.svg",
     imageAlt: "Caño de PVC gris de 110mm de diámetro y 4 metros de largo",
-    featured: false,
     tags: ["pvc", "110mm", "4 metros", "cloaca", "plomería"],
     publishedAt: "2026-01-18",
-    description: "Caño de PVC cloacal de 110mm de diámetro y 4 metros de largo. Pared de 3.2mm, junta deslizante.\n\nPara desagües primarios y secundarios, ventilación de baño y bajadas pluviales. Se vende por tira y también por metro en corte.",
-  },
+    description:
+      "Caño de PVC cloacal de 110mm de diámetro y 4 metros de largo. Pared de 3.2mm, junta deslizante.\n\nPara desagües primarios y secundarios, ventilación de baño y bajadas pluviales. Se vende por tira y también por metro en corte.",
+    },
+  {
+    slug: "canio-pvc-50mm-4m",
+    name: "Caño PVC 50mm x 4m desagüe",
+    category: "Plomería",
+    price: 11200,
+    stock: 42,
+    sku: "PLO-PVC-050",
+    image: "/images/products/canio-pvc-50mm-4m.svg",
+    imageAlt: "Caño PVC gris de 50mm por 4 metros para desagüe cloacal",
+    tags: ["canio", "pvc", "50mm", "desague", "cloacal"],
+    brand: "Tigre",
+    publishedAt: "2026-02-10",
+    description:
+      "Caño PVC gris de 50mm por 4 metros para desagüe cloacal primario y secundario. Pared maciza espesor 3.2mm, junta deslizante.\n\nCumple normas IRAM 13301. Resistente a descargas de hasta 60°C y a la mayoría de limpiadores domésticos. Se pega con adhesivo para PVC o se conecta con junta de goma.",
+    },
   {
     slug: "sella-roscas-poxipol-125cc",
     name: "Sella roscas 125cc Poxipol",
@@ -108,12 +126,12 @@ const PRODUCTS = [
     sku: "PLO-SRO-125",
     image: "/images/products/sella-roscas-poxipol-125cc.svg",
     imageAlt: "Pomo de sellaroscas Poxipol de 125 centímetros cúbicos",
-    featured: false,
     tags: ["sellaroscas", "poxipol", "125cc", "pvc"],
     brand: "Poxipol",
     publishedAt: "2026-01-20",
-    description: "Sella roscas anaeróbico de 125cc para conexiones roscadas de metal. Cura en ausencia de aire y sella hasta 250 psi.\n\nResistente a gas natural, agua caliente y refrigerantes. El pomo aplicador permite llegar a roscas de difícil acceso.",
-  },
+    description:
+      "Sella roscas anaeróbico de 125cc para conexiones roscadas de metal. Cura en ausencia de aire y sella hasta 250 psi.\n\nResistente a gas natural, agua caliente y refrigerantes. El pomo aplicador permite llegar a roscas de difícil acceso.",
+    },
   {
     slug: "cable-unipolar-2-5mm-100m",
     name: "Cable unipolar 2.5mm² x 100m",
@@ -123,11 +141,26 @@ const PRODUCTS = [
     sku: "ELE-CUN-2.5",
     image: "/images/products/cable-unipolar-2-5mm-100m.svg",
     imageAlt: "Bobina de cable unipolar de 2.5 milímetros cuadrados",
-    featured: false,
     tags: ["cable", "2.5mm", "100 metros", "unipolar", "iluminación"],
     publishedAt: "2026-01-22",
-    description: "Cable unipolar de cobre electrolítico con aislación de PVC. Sección 2.5mm², bobina de 100 metros. Color marrón o celeste según lote.\n\nPara circuitos de iluminación y tomacorrientes en instalación domiciliaria. Tensión nominal 450/750V. Se vende la bobina completa o por metro.",
-  },
+    description:
+      "Cable unipolar de cobre electrolítico con aislación de PVC. Sección 2.5mm², bobina de 100 metros. Color marrón o celeste según lote.\n\nPara circuitos de iluminación y tomacorrientes en instalación domiciliaria. Tensión nominal 450/750V. Se vende la bobina completa o por metro.",
+    },
+  {
+    slug: "cable-unipolar-4mm-100m",
+    name: "Cable unipolar 4mm² x 100m",
+    category: "Electricidad",
+    price: 128000,
+    comparePrice: 145000,
+    stock: 9,
+    sku: "ELE-CUN-4.0",
+    image: "/images/products/cable-unipolar-4mm-100m.svg",
+    imageAlt: "Bobina de cable unipolar de 4 milímetros cuadrados por 100 metros",
+    tags: ["cable", "4mm", "100 metros", "unipolar", "tomacorriente"],
+    publishedAt: "2026-03-20",
+    description:
+      "Cable unipolar de cobre electrolítico con aislación de PVC. Sección 4mm², bobina de 100 metros. Color rojo, marrón o celeste según lote.\n\nPara circuitos de tomacorrientes y aire acondicionado en instalación domiciliaria. Tensión nominal 450/750V. Se vende la bobina completa o por metro.",
+    },
   {
     slug: "llave-termica-bipolar-25a",
     name: "Llave térmica bipolar 25A Schneider",
@@ -141,8 +174,25 @@ const PRODUCTS = [
     tags: ["térmica", "bipolar", "25a", "schneider", "disyuntor"],
     brand: "Schneider",
     publishedAt: "2026-01-25",
-    description: "Llave térmica bipolar de 25A curva C, 6kA de poder de corte. Montaje sobre riel DIN en tablero.\n\nProtección contra sobrecarga y cortocircuito para circuitos de tomacorrientes. Cumple norma IEC 60898. Origen Brasil, garantía oficial.",
-  },
+    description:
+      "Llave térmica bipolar de 25A curva C, 6kA de poder de corte. Montaje sobre riel DIN en tablero.\n\nProtección contra sobrecarga y cortocircuito para circuitos de tomacorrientes. Cumple norma IEC 60898. Origen Brasil, garantía oficial.",
+    },
+  {
+    slug: "llave-termica-bipolar-40a",
+    name: "Llave térmica bipolar 40A Schneider",
+    category: "Electricidad",
+    price: 28800,
+    stock: 18,
+    sku: "ELE-LTB-240",
+    image: "/images/products/llave-termica-bipolar-40a.svg",
+    imageAlt: "Llave térmica bipolar de 40 amperes con palanca amarilla Schneider",
+    featured: true,
+    tags: ["llave", "termica", "bipolar", "40a", "schneider"],
+    brand: "Schneider",
+    publishedAt: "2026-03-16",
+    description:
+      "Llave térmica bipolar de 40A curva C, 6kA de poder de corte. Montaje sobre riel DIN en tablero seccional.\n\nPara protección de circuitos de cocina, aire acondicionado y tomas de alto consumo. Botón de test manual, indicador de disparo visible. Cumple norma IEC 60898, garantía oficial Schneider.",
+    },
   {
     slug: "latex-interior-20l-sherwin",
     name: "Látex interior blanco 20L",
@@ -156,8 +206,9 @@ const PRODUCTS = [
     tags: ["látex", "interior", "20 litros", "blanco", "sherwin"],
     brand: "Sherwin Williams",
     publishedAt: "2026-02-01",
-    description: "Látex acrílico interior de 20 litros, acabado mate. Color blanco que se puede entintar.\n\nRinde entre 80 y 120 m² por mano según absorción de la superficie. Lavable, antihongo y de bajo olor. Apto para yeso, revoque yeso, drywall y mampostería.",
-  },
+    description:
+      "Látex acrílico interior de 20 litros, acabado mate. Color blanco que se puede entintar.\n\nRinde entre 80 y 120 m² por mano según absorción de la superficie. Lavable, antihongo y de bajo olor. Apto para yeso, revoque yeso, drywall y mampostería.",
+    },
   {
     slug: "yeso-bolsa-25kg",
     name: "Yeso bolsa 25kg",
@@ -167,11 +218,11 @@ const PRODUCTS = [
     sku: "CON-YES-025",
     image: "/images/products/yeso-bolsa-25kg.svg",
     imageAlt: "Bolsa de papel de 25 kilogramos de yeso",
-    featured: false,
     tags: ["yeso", "25kg", "revoque", "construcción"],
     publishedAt: "2026-01-28",
-    description: "Yeso en polvo de fragüe rápido en bolsa de 25kg. Para revoques de cielorraso, tomado de juntas en drywall y molduras.\n\nFraguado inicial entre 8 y 12 minutos. Se mezcla con agua limpia en proporción 1 a 0.7.",
-  },
+    description:
+      "Yeso en polvo de fragüe rápido en bolsa de 25kg. Para revoques de cielorraso, tomado de juntas en drywall y molduras.\n\nFraguado inicial entre 8 y 12 minutos. Se mezcla con agua limpia en proporción 1 a 0.7.",
+    },
   {
     slug: "tornillos-autoperforantes-t1-x200",
     name: "Tornillos autoperforantes T1 caja x200",
@@ -181,11 +232,11 @@ const PRODUCTS = [
     sku: "FIJ-TPA-T1",
     image: "/images/products/tornillos-autoperforantes-t1-x200.svg",
     imageAlt: "Caja con doscientos tornillos autoperforantes",
-    featured: false,
     tags: ["tornillos", "autoperforantes", "t1", "drywall", "metal"],
     publishedAt: "2026-02-05",
-    description: "Caja con 200 tornillos autoperforantes T1 punta aguja, cabeza trompeta Phillips. Largo 1 pulgada, zincado electrolítico.\n\nPara fijar placa de yeso a perfilería metálica de hasta 0.85mm. Punta aguja que perfora sin agujero piloto.",
-  },
+    description:
+      "Caja con 200 tornillos autoperforantes T1 punta aguja, cabeza trompeta Phillips. Largo 1 pulgada, zincado electrolítico.\n\nPara fijar placa de yeso a perfilería metálica de hasta 0.85mm. Punta aguja que perfora sin agujero piloto.",
+    },
   {
     slug: "flexible-gas-1-2-40cm",
     name: "Flexible gas 1/2\" x 40cm",
@@ -195,11 +246,11 @@ const PRODUCTS = [
     sku: "GAS-FLG-140",
     image: "/images/products/flexible-gas-1-2-40cm.svg",
     imageAlt: "Flexible mallado para conexión de gas de 40 centímetros",
-    featured: false,
     tags: ["flexible", "gas", "1/2", "40cm", "cocina"],
     publishedAt: "2026-02-08",
-    description: "Flexible mallado para gas natural o envasado, 1/2 pulgada por 40cm. Tuerca y niple de bronce con asiento cónico.\n\nCertificado para gas domiciliario. Se usa para conectar cocinas, calefones y termotanques al caño de la red.",
-  },
+    description:
+      "Flexible mallado para gas natural o envasado, 1/2 pulgada por 40cm. Tuerca y niple de bronce con asiento cónico.\n\nCertificado para gas domiciliario. Se usa para conectar cocinas, calefones y termotanques al caño de la red.",
+    },
   {
     slug: "pintura-asfaltica-4l",
     name: "Pintura asfáltica 4L",
@@ -209,11 +260,11 @@ const PRODUCTS = [
     sku: "CON-PAF-004",
     image: "/images/products/pintura-asfaltica-4l.svg",
     imageAlt: "Balde de pintura asfáltica de 4 litros color negro",
-    featured: false,
     tags: ["asfáltica", "4 litros", "impermeabilizante", "techos"],
     publishedAt: "2026-02-10",
-    description: "Pintura asfáltica de base solvente en balde de 4 litros. Impermeabilizante para techos, muros de contención y tanques.\n\nSe aplica con rodillo o pincel en 2 manos cruzadas. Secado al tacto en 4 horas. Resistente a los rayos UV con terminación aluminizada opcional.",
-  },
+    description:
+      "Pintura asfáltica de base solvente en balde de 4 litros. Impermeabilizante para techos, muros de contención y tanques.\n\nSe aplica con rodillo o pincel en 2 manos cruzadas. Secado al tacto en 4 horas. Resistente a los rayos UV con terminación aluminizada opcional.",
+    },
   {
     slug: "disco-corte-metal-bosch-x5",
     name: "Disco corte metal 4½\" pack x5",
@@ -223,12 +274,12 @@ const PRODUCTS = [
     sku: "HER-DCM-5U",
     image: "/images/products/disco-corte-metal-bosch-x5.svg",
     imageAlt: "Pack de cinco discos de corte para amoladora de 4½ pulgadas",
-    featured: false,
     tags: ["disco", "corte", "metal", "4 pulgadas", "bosch", "amoladora"],
     brand: "Bosch",
     publishedAt: "2026-02-12",
-    description: "Pack de cinco discos de corte para metal de 4½ pulgadas (115mm x 1mm). Línea Expert de Bosch, alto rendimiento.\n\nCorte limpio en caño, perfil y chapa. Velocidad máxima 80 m/s. Apto para amoladoras de 720W o más.",
-  },
+    description:
+      "Pack de cinco discos de corte para metal de 4½ pulgadas (115mm x 1mm). Línea Expert de Bosch, alto rendimiento.\n\nCorte limpio en caño, perfil y chapa. Velocidad máxima 80 m/s. Apto para amoladoras de 720W o más.",
+    },
   {
     slug: "cinta-aisladora-pvc-20m",
     name: "Cinta aisladora PVC 20m",
@@ -238,11 +289,11 @@ const PRODUCTS = [
     sku: "ELE-CAI-020",
     image: "/images/products/cinta-aisladora-pvc-20m.svg",
     imageAlt: "Rollo de cinta aisladora PVC de 20 metros color negro",
-    featured: false,
     tags: ["cinta", "aisladora", "pvc", "20 metros", "eléctrica"],
     publishedAt: "2026-02-15",
-    description: "Cinta aisladora de PVC de 20 metros, color negro. Ancho 19mm, espesor 0.13mm.\n\nAutoextinguible, resistente a la abrasión y a los rayos UV. Para aislar empalmes y reparaciones en instalaciones eléctricas.",
-  },
+    description:
+      "Cinta aisladora de PVC de 20 metros, color negro. Ancho 19mm, espesor 0.13mm.\n\nAutoextinguible, resistente a la abrasión y a los rayos UV. Para aislar empalmes y reparaciones en instalaciones eléctricas.",
+    },
   {
     slug: "adhesivo-contacto-1l-poxipol",
     name: "Adhesivo de contacto 1L Poxipol",
@@ -252,12 +303,12 @@ const PRODUCTS = [
     sku: "PIN-ADH-001",
     image: "/images/products/adhesivo-contacto-1l-poxipol.svg",
     imageAlt: "Lata de adhesivo de contacto Poxipol de 1 litro",
-    featured: false,
     tags: ["adhesivo", "contacto", "poxipol", "1 litro", "cuero", "goma"],
     brand: "Poxipol",
     publishedAt: "2026-02-18",
-    description: "Adhesivo de contacto poliuretánico de 1 litro. Pega cuero, goma, madera, laminados, fieltro y metal entre sí.\n\nSe aplica en ambas caras, se deja orear 10 minutos y se unen las superficies con presión. Rinde 4 a 6 m² por mano.",
-  },
+    description:
+      "Adhesivo de contacto poliuretánico de 1 litro. Pega cuero, goma, madera, laminados, fieltro y metal entre sí.\n\nSe aplica en ambas caras, se deja orear 10 minutos y se unen las superficies con presión. Rinde 4 a 6 m² por mano.",
+    },
   {
     slug: "tubo-led-18w-philips",
     name: "Tubo LED 18W Philips T8",
@@ -267,12 +318,12 @@ const PRODUCTS = [
     sku: "ELE-TLD-118",
     image: "/images/products/tubo-led-18w-philips.svg",
     imageAlt: "Tubo LED T8 de 18 watts con casquillo G13",
-    featured: false,
     tags: ["tubo", "led", "18w", "philips", "t8", "iluminación"],
     brand: "Philips",
     publishedAt: "2026-02-20",
-    description: "Tubo LED T8 de 18 watts, 6500K (luz fría), 1800 lúmenes, casquillo G13. Largo 1.20m.\n\nReemplazo directo de tubos fluorescentes tradicionales. Vida útil 30.000 horas, conexión a 220V con balasto electrónico o directo.",
-  },
+    description:
+      "Tubo LED T8 de 18 watts, 6500K (luz fría), 1800 lúmenes, casquillo G13. Largo 1.20m.\n\nReemplazo directo de tubos fluorescentes tradicionales. Vida útil 30.000 horas, conexión a 220V con balasto electrónico o directo.",
+    },
   {
     slug: "valvula-esferica-1-2",
     name: "Válvula esférica ½\"",
@@ -282,33 +333,323 @@ const PRODUCTS = [
     sku: "GAS-VES-012",
     image: "/images/products/valvula-esferica-1-2.svg",
     imageAlt: "Válvula esférica de ½ pulgada con palanca roja",
-    featured: false,
     tags: ["válvula", "esférica", "1/2", "gas", "agua"],
     publishedAt: "2026-02-22",
-    description: "Válvula esférica de ½ pulgada, cuerpo de bronce, esfera de acero inoxidable y palanca de aluminio color rojo.\n\nApta para gas, agua fría y caliente. Roscas NPT según norma. Cierre total con un cuarto de giro.",
-  },
+    description:
+      "Válvula esférica de ½ pulgada, cuerpo de bronce, esfera de acero inoxidable y palanca de aluminio color rojo.\n\nApta para gas, agua fría y caliente. Roscas NPT según norma. Cierre total con un cuarto de giro.",
+    },
+  {
+    slug: "atornillador-inalambrico-12v",
+    name: "Atornillador inalámbrico 12V con maletín",
+    category: "Herramientas eléctricas",
+    price: 78900,
+    stock: 14,
+    sku: "HER-ATI-012",
+    image: "/images/products/atornillador-inalambrico-12v.svg",
+    imageAlt: "Atornillador inalámbrico 12V con maletín plástico y batería de litio",
+    featured: true,
+    comparePrice: 95000,
+    tags: ["atornillador", "inalambrico", "12v", "litio", "maletin"],
+    brand: "Bosch",
+    publishedAt: "2026-02-22",
+    description:
+      "Atornillador inalámbrico 12V con batería de litio 1.5Ah y cargador rápido. Embrague de 10 posiciones más modo taladro. Mango con grip antideslizante y luz LED de trabajo.\n\nIncluye maletín, 25 mechas y puntas, cargador y dos baterías. Torque máximo 30Nm. Ideal para muebles, placas de yeso y montaje ligero.",
+    },
+  {
+    slug: "disyuntor-diferencial-40a",
+    name: "Disyuntor diferencial bipolar 40A",
+    category: "Electricidad",
+    price: 42000,
+    comparePrice: 49800,
+    stock: 16,
+    sku: "ELE-DIS-040",
+    image: "/images/products/disyuntor-diferencial-40a.svg",
+    imageAlt: "Disyuntor diferencial bipolar 40 amperes para tablero eléctrico",
+    featured: true,
+    tags: ["disyuntor", "diferencial", "bipolar", "40a", "din"],
+    brand: "Schneider",
+    publishedAt: "2026-01-28",
+    description:
+      "Disyuntor diferencial bipolar 40A, 30mA de sensibilidad. Montaje sobre riel DIN en tablero seccional.\n\nProtege personas contra contactos indirectos y corrientes de fuga. Botón de test para verificar funcionamiento. Cumple IEC 61008.",
+    },
+  {
+    slug: "pinza-amperimetrica-600v",
+    name: "Pinza amperimétrica digital 600V",
+    category: "Electricidad",
+    price: 64500,
+    stock: 9,
+    sku: "ELE-PIN-600",
+    image: "/images/products/pinza-amperimetrica-600v.svg",
+    imageAlt: "Pinza amperimétrica digital con mordazas y pantalla LCD",
+    tags: ["pinza", "amperimetrica", "digital", "multimetro", "600v"],
+    brand: "Truper",
+    publishedAt: "2026-02-14",
+    description:
+      "Pinza amperimétrica digital AC/DC con rango 600V y 400A. Lectura True RMS, pantalla retroiluminada y función de retención de lectura.\n\nApertura de mordazas 30mm, ideal para tableros y mediciones en obra. Incluye cables de prueba, estuche y batería 9V. Normas IEC 610610.",
+    },
+  {
+    slug: "cinta-metrica-5m",
+    name: "Cinta métrica 5m con freno",
+    category: "Herramientas manuales",
+    price: 8900,
+    stock: 38,
+    sku: "MAN-CMT-005",
+    image: "/images/products/cinta-metrica-5m.svg",
+    imageAlt: "Cinta métrica enrollable de 5 metros con freno y clip",
+    tags: ["cinta", "metrica", "5m", "freno", "medicion"],
+    brand: "Stanley",
+    publishedAt: "2026-02-20",
+    description:
+      "Cinta métrica de 5 metros con freno y clip para cinturón. Caja ABS amarilla con recubrimiento de goma antideslizante.\n\nCinta de acero lacada con escala milimétrica y en pulgadas. Gancho magnético Zero Glitch que mantiene la calibración exacta. Botón de bloqueo y retorno suave.",
+    },
+  {
+    slug: "esmalte-sintetico-blanco-1l",
+    name: "Esmalte sintético blanco 1L",
+    category: "Pinturería",
+    price: 18400,
+    comparePrice: 22900,
+    stock: 32,
+    sku: "PIN-ESM-001",
+    image: "/images/products/esmalte-sintetico-blanco-1l.svg",
+    imageAlt: "Lata de esmalte sintético blanco brillante de 1 litro",
+    bestSeller: true,
+    tags: ["esmalte", "sintetico", "blanco", "1 litro", "brillante"],
+    brand: "Sherwin",
+    publishedAt: "2026-03-02",
+    description:
+      "Esmalte sintético alquídico blanco brillante de 1 litro. Acabado liso y nivelado, alto cubritivo y gran durabilidad en interior y exterior.\n\nPara metales, madera y mampostería. Secado al tacto en 2 horas, repintado a las 8 horas. Rendimiento: 10 a 12 m² por mano. Aplicar con pincel, rodillo o soplete.",
+    },
+  {
+    slug: "pintura-esmalte-rojo-bermellon-1l",
+    name: "Pintura esmalte sintético rojo bermellón 1L",
+    category: "Pinturería",
+    price: 19600,
+    stock: 28,
+    sku: "PIN-ESM-ROJ",
+    image: "/images/products/pintura-esmalte-rojo-bermellon-1l.svg",
+    imageAlt: "Lata de esmalte sintético color rojo bermellón de 1 litro",
+    tags: ["pintura", "esmalte", "sintetico", "rojo", "bermellon"],
+    brand: "Sherwin",
+    publishedAt: "2026-03-18",
+    description:
+      "Esmalte sintético alquídico rojo bermellón de 1 litro. Acabado brillante de alta cubritiva y excelente nivelación.\n\nPara metales, madera y mampostería interior y exterior. Secado al tacto en 2 horas, repintado a las 8 horas. Rendimiento 10 a 12 m² por mano. Aplicar con pincel, rodillo o soplete.",
+    },
+  {
+    slug: "enduido-interior-bolsa-5kg",
+    name: "Enduido interior bolsa 5kg",
+    category: "Pinturería",
+    price: 9400,
+    stock: 32,
+    sku: "PIN-END-005",
+    image: "/images/products/enduido-interior-bolsa-5kg.svg",
+    imageAlt: "Bolsa de enduido plástico interior de 5 kilogramos",
+    tags: ["enduido", "interior", "5kg", "masilla", "pintura"],
+    brand: "Sherwin",
+    publishedAt: "2026-03-22",
+    description:
+      "Enduido plástico interior en bolsa de 5kg. Para nivelar imperfecciones en paredes de yeso, revoque y mampostería antes de pintar.\n\nListo para usar, no necesita dilución. Secado rápido entre manos. Aplicable con espátula o llana. Compatible con látex y esmalte al agua. Rendimiento aproximado 1.5 a 2 m² por kilo por mano.",
+    },
+  {
+    slug: "placa-yeso-estandar-120",
+    name: "Placa de yeso estándar 1.20 x 2.40m",
+    category: "Construcción seca",
+    price: 23800,
+    stock: 26,
+    sku: "CSE-PYE-120",
+    image: "/images/products/placa-yeso-estandar-120.svg",
+    imageAlt: "Placa de yeso estándar blanca de 1.20 por 2.40 metros",
+    bestSeller: true,
+    tags: ["placa", "yeso", "drywall", "estandar", "120"],
+    brand: "Knauf",
+    publishedAt: "2026-01-30",
+    description:
+      "Placa de yeso estándar de 1.20 x 2.40 metros, espesor 12.5mm. Núcleo de yeso con revestimiento de cartón gris en ambas caras.\n\nPara tabiques interiores y cielorrasos donde no haya humedad. Se fija con tornillos T1 sobre perfilería metálica y se termina con masilla y cinta.",
+    },
+  {
+    slug: "tarugos-plasticos-n8",
+    name: "Tarugos plásticos N°8 bolsa x100",
+    category: "Fijaciones",
+    price: 5400,
+    stock: 95,
+    sku: "FIJ-TAR-008",
+    image: "/images/products/tarugos-plasticos-n8.svg",
+    imageAlt: "Bolsa transparente con tarugos plásticos número ocho color gris",
+    tags: ["tarugo", "plastico", "n8", "fijacion", "bolsa"],
+    brand: "Fischer",
+    publishedAt: "2026-02-04",
+    description:
+      "Bolsa con 100 tarugos plásticos N°8 (8mm) color gris. Para fijaciones en mampostería, ladrillo hueco y concreto.\n\nSe usan con tornillos de 4 a 5mm. Topes laterales que evitan el giro durante la colocación. Presentación en bolsa resellable.",
+    },
+  {
+    slug: "manguera-jardin-reforzada-15m",
+    name: "Manguera jardín reforzada 15m",
+    category: "Jardín",
+    price: 24900,
+    stock: 22,
+    sku: "JAR-MAN-015",
+    image: "/images/products/manguera-jardin-reforzada-15m.svg",
+    imageAlt: "Manguera de jardín reforzada color verde enrollada en 15 metros",
+    featured: true,
+    bestSeller: true,
+    tags: ["manguera", "jardin", "15m", "reforzada", "riego"],
+    brand: "Karcher",
+    publishedAt: "2026-03-04",
+    description:
+      "Manguera de jardín reforzada de 15 metros con trama trenzada de polyester. Resiste presión de trabajo hasta 8 bar sin deformarse.\n\nDiámetro interno 1/2 pulgada, apta para picos, lanzas y riego por goteo. Se entrega con conectores rápidos hembra y macho. Venta también por metro en mostrador.",
+    },
+  {
+    slug: "tijera-podar-bypass-8",
+    name: "Tijera de podar bypass 8\"",
+    category: "Jardín",
+    price: 18900,
+    stock: 14,
+    sku: "JAR-TPO-008",
+    image: "/images/products/tijera-podar-bypass-8.svg",
+    imageAlt: "Tijera de podar bypass con mango naranja y hoja curva",
+    tags: ["tijera", "podar", "bypass", "8 pulgadas", "jardin"],
+    brand: "Tramontina",
+    publishedAt: "2026-03-06",
+    description:
+      "Tijera de podar bypass de 8 pulgadas con hoja de acero SK5 templado y mango ergonómico con cobertura antideslizante.\n\nApertura máxima 25mm. Sistema de cierre de seguridad con traba para guardar. Ideal para poda de frutales, rosales y arbustos. Repuestos de hoja disponibles.",
+    },
+  {
+    slug: "pico-regador-plastico",
+    name: "Pico regador plástico con rociador",
+    category: "Jardín",
+    price: 4900,
+    stock: 65,
+    sku: "JAR-PRE-001",
+    image: "/images/products/pico-regador-plastico.svg",
+    imageAlt: "Pico regador de plástico color verde con tres posiciones de rociado",
+    bestSeller: true,
+    tags: ["pico", "regador", "rociador", "riego", "jardin"],
+    publishedAt: "2026-03-08",
+    description:
+      "Pico regador de plástico ABS color verde con tres posiciones de rociado: chorro concentrado, lluvia fina y niebla.\n\nConexión rápida estándar 3/4 pulgada. Gatillo ergonómico con bloqueo para uso continuo. Resistente a golpes y caídas, ideal para uso doméstico intensivo.",
+    },
+  {
+    slug: "candado-laminado-50mm",
+    name: "Candado laminado 50mm",
+    category: "Seguridad",
+    price: 14200,
+    comparePrice: 17800,
+    stock: 35,
+    sku: "SEG-CAN-050",
+    image: "/images/products/candado-laminado-50mm.svg",
+    imageAlt: "Candado laminado de 50 milímetros con arco de acero y cuerpo cromado",
+    featured: true,
+    bestSeller: true,
+    tags: ["candado", "laminado", "50mm", "seguridad", "arco"],
+    brand: "Master Lock",
+    publishedAt: "2026-03-10",
+    description:
+      "Candado laminado de 50mm con cuerpo de acero cromado y arco de acero templado con tratamiento anticorte.\n\nDoble traba de cierre, cilindro con 5 pines, resistencia a la ganzúa y al taladro. Viene con 3 llaves de seguridad. Apto intemperie. Garantía de por vida en mecanismo.",
+    },
+  {
+    slug: "cerradura-embutir-doble-paleta",
+    name: "Cerradura embutir doble paleta",
+    category: "Seguridad",
+    price: 36400,
+    stock: 12,
+    sku: "SEG-CEB-001",
+    image: "/images/products/cerradura-embutir-doble-paleta.svg",
+    imageAlt: "Cerradura de embutir con frente dorado para puertas de madera",
+    tags: ["cerradura", "embutir", "paleta", "seguridad", "puerta"],
+    brand: "Kallay",
+    publishedAt: "2026-03-12",
+    description:
+      "Cerradura de embutir con doble paleta y frente niquelado. Caja de acero galvanizado de 100x70mm, picaporte reversible.\n\nPara puertas interiores y exteriores de madera. Backset 60mm, distancia entre ejes 85mm. Cilindro con 3 llaves, opción de amaestramiento. Cumple norma IRAM.",
+    },
+  {
+    slug: "guantes-nitrilo-industriales-x10",
+    name: "Guantes de nitrilo industriales x10",
+    category: "Seguridad",
+    price: 8900,
+    stock: 48,
+    sku: "SEG-GNI-010",
+    image: "/images/products/guantes-nitrilo-industriales-x10.svg",
+    imageAlt: "Caja con diez pares de guantes de nitrilo color azul industrial",
+    bestSeller: true,
+    tags: ["guantes", "nitrilo", "industriales", "proteccion", "caja"],
+    publishedAt: "2026-03-14",
+    description:
+      "Caja con 10 pares de guantes descartables de nitrilo azul industrial. Espesor 0.10mm, largo 240mm.\n\nResistentes a solventes, aceites y detergentes. Aptos para contacto alimentario. Sin polvo, ambidiestros. Excelente sensibilidad táctil. Caja resellable con práctica dispensación.",
+    },
+  {
+    slug: "mecha-widia-10mm-120mm",
+    name: "Mecha widia 10mm x 120mm",
+    category: "Herramientas eléctricas",
+    price: 4600,
+    stock: 85,
+    sku: "HER-MWD-010",
+    image: "/images/products/mecha-widia-10mm-120mm.svg",
+    imageAlt: "Mecha widia de 10 milímetros con punta de carburo de tungsteno",
+    bestSeller: true,
+    tags: ["mecha", "widia", "10mm", "mamposteria", "taladro"],
+    brand: "Bosch",
+    publishedAt: "2026-03-24",
+    description:
+      "Mecha widia de 10mm con vástago cilíndrico y punta de carburo de tungsteno. Largo total 120mm.\n\nPara perforación de mampostería, ladrillo y concreto con taladro percutor. Corte rápido y limpio. Marca Bosch con tratamiento térmico que prolonga la vida útil.",
+    },
+  {
+    slug: "destornillador-phillips-ph2-150mm",
+    name: "Destornillador Phillips PH2 150mm",
+    category: "Herramientas manuales",
+    price: 7800,
+    stock: 48,
+    sku: "MAN-DST-PH2",
+    image: "/images/products/destornillador-phillips-ph2-150mm.svg",
+    imageAlt: "Destornillador Phillips PH2 de 150 milímetros con mango ergonómico",
+    tags: ["destornillador", "phillips", "ph2", "150mm", "manual"],
+    brand: "Stanley",
+    publishedAt: "2026-03-26",
+    description:
+      "Destornillador Phillips PH2 con punta magnetizada y varilla de acero al cromo vanadio. Largo de varilla 150mm.\n\nMango ergonómico con cobertura de goma antideslizante y agujero para colgar. Punta tratada térmicamente para mayor durabilidad. Apto para electricidad, mecánica y armado de muebles.",
+    },
+  {
+    slug: "adhesivo-epoxi-25g",
+    name: "Adhesivo epoxi bicomponente 25g",
+    category: "Fijaciones",
+    price: 6900,
+    stock: 70,
+    sku: "FIJ-EPO-025",
+    image: "/images/products/adhesivo-epoxi-25g.svg",
+    imageAlt: "Blister de adhesivo epoxi con dos tubos de resinas bicomponente",
+    tags: ["adhesivo", "epoxi", "bicomponente", "25g", "reparacion"],
+    brand: "Poxipol",
+    publishedAt: "2026-03-28",
+    description:
+      "Adhesivo epoxi bicomponente en blister con 25g de resina y endurecedor. Tiempo de trabajo 4 minutos, fraguado final 1 hora.\n\nPega metal, cerámica, vidrio, madera, plástico y porcelana entre sí. Resistente al agua, aceites y solventes. Una vez curado se puede lijar, perforar y pintar. Color translúcido.",
+    },
 ];
 
 await mkdir(outDir, { recursive: true });
 for (const p of PRODUCTS) {
-  const fm = [
+  const lines = [
     "---",
     `name: ${p.name}`,
     `category: "${p.category}"`,
     `price: ${p.price}`,
+  ];
+  if (p.comparePrice !== undefined) lines.push(`comparePrice: ${p.comparePrice}`);
+  lines.push(
     `stock: ${p.stock}`,
     `sku: ${p.sku}`,
     `image: ${p.image}`,
     `imageAlt: ${p.imageAlt}`,
-    `featured: ${p.featured}`,
-    `tags:`,
-    ...p.tags.map((t) => `  - ${t}`),
-    ...(p.brand ? [`brand: ${p.brand}`] : []),
-    `publishedAt: ${p.publishedAt}`,
-    "---",
-    "",
-    p.description,
-  ].join("\n");
-  await writeFile(join(outDir, `${p.slug}.md`), fm, "utf8");
+    `featured: ${p.featured === true}`,
+    `bestSeller: ${p.bestSeller === true}`,
+  );
+  if (p.rating !== undefined) lines.push(`rating: ${p.rating}`);
+  lines.push("tags:");
+  for (const t of p.tags) {
+    // Quote tags that look like numbers or booleans so YAML keeps them as strings.
+    const safe = /^[0-9]+$|^(true|false|null)$/.test(t) ? `"${t}"` : t;
+    lines.push(`  - ${safe}`);
+  }
+  if (p.brand) lines.push(`brand: ${p.brand}`);
+  lines.push(`publishedAt: ${p.publishedAt}`, "---", "", p.description, "");
+
+  await writeFile(join(outDir, `${p.slug}.md`), lines.join("\n"), "utf8");
 }
 console.log(`Generated ${PRODUCTS.length} product markdown files in ${outDir}`);

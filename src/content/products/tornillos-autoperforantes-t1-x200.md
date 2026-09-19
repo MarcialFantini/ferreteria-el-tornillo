@@ -7,6 +7,7 @@ sku: FIJ-TPA-T1
 image: /images/products/tornillos-autoperforantes-t1-x200.svg
 imageAlt: Caja con doscientos tornillos autoperforantes
 featured: false
+bestSeller: false
 tags:
   - tornillos
   - autoperforantes

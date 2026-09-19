@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-pico-regador-plastico">
+  <title id="t-pico-regador-plastico">Pico regador con rociador</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="280" y="180" width="200" height="160" rx="20" fill="#4a6741"/>
+      <rect x="296" y="196" width="168" height="40" fill="#171513"/>
+      <rect x="380" y="340" width="40" height="80" rx="6" fill="#171513"/>
+      <rect x="356" y="420" width="88" height="80" rx="10" fill="#171513"/>
+      <rect x="360" y="240" width="40" height="60" fill="#c28e3f"/>
+      <circle cx="380" cy="170" r="24" fill="#171513"/>
+      <circle cx="380" cy="170" r="14" fill="#f5f2ea"/>
+      <circle cx="380" cy="170" r="6" fill="#171513"/>
+      <text x="380" y="270" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="22" fill="#171513" font-weight="700">ON</text>
+    </g>
+</svg>

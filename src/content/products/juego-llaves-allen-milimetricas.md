@@ -7,6 +7,7 @@ sku: MAN-LAL-008
 image: /images/products/juego-llaves-allen-milimetricas.svg
 imageAlt: Juego de ocho llaves Allen hexagonales en estuche
 featured: false
+bestSeller: false
 tags:
   - allen
   - milimétricas

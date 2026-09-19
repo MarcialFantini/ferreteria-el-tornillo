@@ -7,6 +7,7 @@ sku: PIN-ADH-001
 image: /images/products/adhesivo-contacto-1l-poxipol.svg
 imageAlt: Lata de adhesivo de contacto Poxipol de 1 litro
 featured: false
+bestSeller: false
 tags:
   - adhesivo
   - contacto

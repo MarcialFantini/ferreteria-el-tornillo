@@ -1,21 +1,37 @@
----
+﻿---
+/**
+ * Header v2 — editorial.
+ *
+ * Estructura:
+ *   - Logo + brand text (izquierda)
+ *   - Nav desktop (centro / derecha)
+ *   - SearchBar (siempre visible)
+ *   - CartButton + WhatsApp CTA (extremo derecho)
+ *   - Mobile: search abre overlay; menú hamburguesa.
+ */
+
 import Brand from "./Brand.astro";
 import SearchBar, { type SearchProduct } from "./SearchBar.tsx";
+import CartButton from "./CartButton.tsx";
+import FavoriteChip from "./FavoriteChip.tsx";
 import { getCollection } from "astro:content";
+import { whatsappLink } from "../lib/whatsapp";
+
+const WA_GENERIC = whatsappLink("Hola, quiero consultar por un producto");
 
 const path = Astro.url.pathname;
-const isCatalog = path.startsWith("/productos");
 
 const navItems = [
   { href: "/", label: "Inicio" },
   { href: "/productos", label: "Catálogo" },
   { href: "/categorias", label: "Categorías" },
-  { href: "/#contacto", label: "Contacto" },
+  { href: "/comparar", label: "Comparar" },
+  { href: "/envios", label: "Envíos" },
+  { href: "/donde-encontrarnos", label: "Local" },
+  { href: "/nosotros", label: "Nosotros" },
+  { href: "/contacto", label: "Contacto" },
 ];
 
-// Productos serializados para la isla de búsqueda.
-// El searchBlob se pre-computa en el servidor para que el cliente
-// no tenga que re-procesar el string cada keystroke.
 const allProducts = await getCollection("products");
 const searchProducts: SearchProduct[] = allProducts.map((p) => ({
   slug: p.id,
@@ -37,49 +53,54 @@ const searchProducts: SearchProduct[] = allProducts.map((p) => ({
 }));
 ---
 
-<header
-  class="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-kraft)]/90 backdrop-blur-sm"
->
-  <div
-    class="mx-auto flex max-w-[1400px] items-center justify-between gap-4 px-4 py-3 md:px-8 md:py-4"
-  >
+<header class="sticky top-0 z-40 border-b border-[var(--color-navy)] bg-[var(--color-cream)]/95 backdrop-blur-md">
+  {/* Sub-barra editorial fina */}
+  <div class="hidden border-b border-[var(--color-line)] bg-[var(--color-navy)] text-[var(--color-cream)] md:block">
+    <div class="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-1.5 text-[10px] mono uppercase tracking-[0.22em]">
+      <p>Ituzaingó · Buenos Aires · desde 1985</p>
+      <p class="flex items-center gap-4">
+        <span>Lun-Vie 08:30 · 19:00</span>
+        <span aria-hidden="true">·</span>
+        <span>Sáb 08:30 · 13:30</span>
+        <span aria-hidden="true">·</span>
+        <span class="text-[var(--color-mustard)]">40 años en zona oeste</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="mx-auto flex max-w-[1400px] items-center justify-between gap-3 px-4 py-3 md:gap-4 md:px-6 md:py-4">
     <a
       href="/"
-      class="flex items-center gap-2 text-[var(--color-steel)] no-underline"
+      class="flex items-center gap-3 text-[var(--color-navy)] no-underline"
       aria-label="Ferretería El Tornillo, ir al inicio"
     >
       <Brand />
-      <span class="hidden sm:block">
-        <span class="block text-[15px] font-bold leading-none">El Tornillo</span>
-        <span class="mono block text-[10px] uppercase tracking-[0.22em] text-[var(--color-steel-muted)]"
-          >Ferretería · 1985</span
-        >
+      <span class="hidden sm:block leading-none">
+        <span class="block font-display text-[20px] font-bold tracking-tight">El Tornillo</span>
+        <span class="mono block text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">
+          Ferretería · 1985
+        </span>
       </span>
     </a>
 
-    <nav aria-label="Navegación principal" class="hidden md:block">
-      <ul class="flex items-center gap-1 text-sm">
+    <nav aria-label="Navegación principal" class="hidden xl:block">
+      <ul class="flex items-center gap-0.5 text-sm">
         {
           navItems.map((item) => {
             const baseHref = item.href.split("#")[0];
             const isAnchorToHome = item.href.startsWith("/#");
-            const active =
-              !isAnchorToHome &&
-              (baseHref === path ||
-                (baseHref !== "/" && path.startsWith(`${baseHref}/`)));
+            const active = !isAnchorToHome && (baseHref === path || (baseHref !== "/" && path.startsWith(`${baseHref}/`)));
             return (
               <li>
                 <a
                   href={item.href}
                   aria-current={active ? "page" : undefined}
                   class:list={[
-                    "mono inline-flex items-center uppercase tracking-[0.06em] px-3 py-2 font-medium transition-colors text-[12px]",
-                    active
-                      ? "bg-[var(--color-steel)] text-[var(--color-kraft)]"
-                      : "text-[var(--color-steel-soft)] hover:bg-[var(--color-kraft-deep)] hover:text-[var(--color-steel)]",
+                    "mono relative px-3 py-2 text-[11px] font-bold uppercase tracking-[0.16em] transition-colors",
+                    active ? "text-[var(--color-navy)]" : "text-[var(--color-navy-muted)] hover:text-[var(--color-navy)]",
                   ]}
                 >
-                  {item.label}
+                  <span class="swipe-underline">{item.label}</span>
                 </a>
               </li>
             );
@@ -89,31 +110,39 @@ const searchProducts: SearchProduct[] = allProducts.map((p) => ({
     </nav>
 
     <div class="flex items-center gap-2">
-      <SearchBar client:load products={searchProducts} />
+      <div class="hidden md:block">
+        <SearchBar client:load products={searchProducts} />
+      </div>
+      <button
+        type="button"
+        class="crosshair has-bottom-crosshairs inline-flex h-10 w-10 items-center justify-center border border-[var(--color-navy)] bg-[var(--color-cream)] md:hidden"
+        aria-label="Abrir búsqueda"
+        data-search-toggle
+      >
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="square" aria-hidden="true">
+          <circle cx="11" cy="11" r="6" />
+          <line x1="16" y1="16" x2="20" y2="20" />
+        </svg>
+      </button>
+
+      <CartButton client:load />
 
       <a
-        href="https://wa.me/5491145678900?text=Hola%2C%20quiero%20consultar%20por%20un%20producto"
+        href={WA_GENERIC}
         target="_blank"
         rel="noopener"
-        class="mono hidden md:inline-flex items-center gap-2 bg-[var(--color-rivet)] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--color-steel)] transition-transform active:scale-[0.98] hover:bg-[var(--color-rivet-deep)]"
+        aria-label="Escribir por WhatsApp"
+        class="mono hidden h-10 items-center gap-2 bg-[var(--color-mustard)] px-4 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-mustard-deep)] lg:inline-flex"
       >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          width="16"
-          height="16"
-          fill="currentColor"
-        >
-          <path
-            d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.46 0 .12 5.34.12 11.92c0 2.1.55 4.16 1.6 5.96L0 24l6.28-1.64a11.92 11.92 0 0 0 5.76 1.47h.01c6.58 0 11.92-5.34 11.92-11.92 0-3.18-1.24-6.18-3.45-8.43zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.73.97 1-3.64-.24-.37a9.88 9.88 0 0 1-1.51-5.24c0-5.46 4.45-9.91 9.91-9.91 2.65 0 5.14 1.03 7.01 2.9a9.86 9.86 0 0 1 2.9 7.01c0 5.46-4.45 9.91-9.91 9.91z"
-          ></path>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true">
+          <path d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.46 0 .12 5.34.12 11.92c0 2.1.55 4.16 1.6 5.96L0 24l6.28-1.64a11.92 11.92 0 0 0 5.76 1.47h.01c6.58 0 11.92-5.34 11.92-11.92 0-3.18-1.24-6.18-3.45-8.43zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.73.97 1-3.64-.24-.37a9.88 9.88 0 0 1-1.51-5.24c0-5.46 4.45-9.91 9.91-9.91 2.65 0 5.14 1.03 7.01 2.9a9.86 9.86 0 0 1 2.9 7.01c0 5.46-4.45 9.91-9.91 9.91z" />
         </svg>
-        Consultar
+        WhatsApp
       </a>
 
       <button
         type="button"
-        class="crosshair has-bottom-crosshairs inline-flex h-10 w-10 items-center justify-center border border-[var(--color-steel)] bg-[var(--color-kraft)] md:hidden"
+        class="crosshair has-bottom-crosshairs inline-flex h-10 w-10 items-center justify-center border border-[var(--color-navy)] bg-[var(--color-cream)] md:hidden"
         aria-label="Abrir menú"
         aria-controls="mobile-nav"
         aria-expanded="false"
@@ -128,11 +157,15 @@ const searchProducts: SearchProduct[] = allProducts.map((p) => ({
     </div>
   </div>
 
-  <div
-    id="mobile-nav"
-    hidden
-    class="border-t border-[var(--color-line)] bg-[var(--color-kraft)] md:hidden"
-  >
+  {/* Mobile search overlay */}
+  <div id="mobile-search" hidden class="border-t border-[var(--color-navy)] bg-[var(--color-cream)] md:hidden">
+    <div class="mx-auto max-w-[1400px] px-4 py-3">
+      <SearchBar client:load products={searchProducts} />
+    </div>
+  </div>
+
+  {/* Mobile nav */}
+  <div id="mobile-nav" hidden class="border-t border-[var(--color-navy)] bg-[var(--color-cream)] md:hidden">
     <nav aria-label="Navegación móvil" class="mx-auto max-w-[1400px] px-4 py-3">
       <ul class="flex flex-col gap-1 text-base">
         {
@@ -140,41 +173,46 @@ const searchProducts: SearchProduct[] = allProducts.map((p) => ({
             <li>
               <a
                 href={item.href}
-                class="mono flex items-center justify-between border-b border-[var(--color-line)] px-3 py-3 font-medium text-[12px] uppercase tracking-[0.08em] text-[var(--color-steel-soft)] hover:text-[var(--color-steel)]"
+                class="mono flex items-center justify-between border-b border-[var(--color-line)] px-2 py-3 text-[11px] font-bold uppercase tracking-[0.16em] text-[var(--color-navy-muted)] hover:text-[var(--color-navy)]"
               >
                 {item.label}
-                <span aria-hidden="true" class="mono">→</span>
+                <span aria-hidden="true" class="font-display">→</span>
               </a>
             </li>
           ))
         }
       </ul>
       <a
-        href="https://wa.me/5491145678900?text=Hola%2C%20quiero%20consultar%20por%20un%20producto"
+        href={WA_GENERIC}
         target="_blank"
         rel="noopener"
-        class="mono mt-4 flex items-center justify-center gap-2 bg-[var(--color-rivet)] px-4 py-3 text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--color-steel)]"
+        class="mono mt-4 flex items-center justify-center gap-2 bg-[var(--color-mustard)] px-4 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)]"
       >
-        Consultar por WhatsApp
+        WhatsApp · Consultar
       </a>
     </nav>
   </div>
 </header>
 
 <script>
-  // Mobile menu toggle, accesible.
-  const btn = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
-  const panel = document.getElementById("mobile-nav");
-  if (btn && panel) {
+  // Toggles accesibles: menú móvil y búsqueda móvil.
+  const wire = (btnAttr: string, panelId: string, label: string) => {
+    const btn = document.querySelector<HTMLButtonElement>(`[${btnAttr}]`);
+    const panel = document.getElementById(panelId);
+    if (!btn || !panel) return;
     btn.addEventListener("click", () => {
       const open = panel.hasAttribute("hidden");
       if (open) {
         panel.removeAttribute("hidden");
         btn.setAttribute("aria-expanded", "true");
+        btn.setAttribute("aria-label", `Cerrar ${label}`);
       } else {
         panel.setAttribute("hidden", "");
         btn.setAttribute("aria-expanded", "false");
+        btn.setAttribute("aria-label", `Abrir ${label}`);
       }
     });
-  }
+  };
+  wire("data-menu-toggle", "mobile-nav", "menú");
+  wire("data-search-toggle", "mobile-search", "búsqueda");
 </script>

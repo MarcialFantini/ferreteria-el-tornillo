@@ -7,6 +7,7 @@ sku: HER-DCM-5U
 image: /images/products/disco-corte-metal-bosch-x5.svg
 imageAlt: Pack de cinco discos de corte para amoladora de 4½ pulgadas
 featured: false
+bestSeller: false
 tags:
   - disco
   - corte

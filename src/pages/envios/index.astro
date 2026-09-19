@@ -1,0 +1,244 @@
+﻿---
+/**
+ * /envios — Página editorial de envíos y logística.
+ *
+ * Estructura:
+ *  - Hero con copy institucional
+ *  - Tabla editorial con zonas, plazos y costos
+ *  - Sección "¿Cómo funciona?" con 3 pasos
+ *  - Restricciones / notas operativas
+ *  - FAQ condensado (sin acordeón JS para evitar hydration extra)
+ *  - CTA WhatsApp
+ */
+import Layout from "../../layouts/Layout.astro";
+import { whatsappLink } from "../../lib/whatsapp";
+
+const zones = [
+  {
+    code: "Z1",
+    name: "Ituzaingó",
+    detail: "Centro y barrios residenciales",
+    eta: "24-48 hs",
+    cost: "$ 4.500",
+    note: "Retiro sin cargo en local",
+  },
+  {
+    code: "Z2",
+    name: "Morón · Hurlingham",
+    detail: "Incluye Haedo, Villa Tesei, El Libertador",
+    eta: "48-72 hs",
+    cost: "$ 7.200",
+    note: "Envío coordinado por WhatsApp",
+  },
+  {
+    code: "Z3",
+    name: "Merlo · Padua · San Antonio de Padua",
+    detail: "Códigos postales 17XX",
+    eta: "3-5 días",
+    cost: "$ 9.800",
+    note: "Sujeto a disponibilidad de flota",
+  },
+  {
+    code: "Z4",
+    name: "CABA y resto de GBA",
+    detail: "Consultar según volumen y peso",
+    eta: "A convenir",
+    cost: "A convenir",
+    note: "Sólo pagos anticipados · Mercadería frágil a coordinar",
+  },
+];
+
+const pasos = [
+  {
+    n: "01",
+    title: "Armás el pedido en el catálogo",
+    body: "Agregás productos al carrito y nos escribís por WhatsApp con la lista. Confirmamos stock y precio final antes de cualquier cosa.",
+  },
+  {
+    n: "02",
+    title: "Coordinamos envío o retiro",
+    body: "Si querés envío, te pasamos zona, plazo y costo. Si preferís retirar, dejamos el pedido listo en mostrador con tu nombre.",
+  },
+  {
+    n: "03",
+    title: "Pagás y recibís",
+    body: "Efectivo, transferencia o MercadoPago contra entrega en la zona de Ituzaingó. Para otras zonas, pago anticipado.",
+  },
+];
+
+const faq = [
+  { q: "¿Hacen envíos el mismo día?", a: "En Ituzaingó y Morón sí, si el pedido entra antes de las 14:00 hs y hay stock. Pasada esa hora sale al día siguiente." },
+  { q: "¿Puedo retirar hoy si vengo a la tarde?", a: "Sí. Pedidos confirmados antes de las 17:00 quedan listos para retirar al día siguiente a partir de las 10:00." },
+  { q: "¿Tienen envío gratis?", a: "Para compras mayores a $ 250.000 dentro de Ituzaingó. Para el resto de zona oeste se negocia por volumen." },
+  { q: "¿Qué pasa si no estoy cuando llega el envío?", a: "Coordinamos una segunda visita sin costo. Después de dos visitas fallidas, el tercer envío se cobra aparte." },
+  { q: "¿Llevan material frágil?", a: "Sí (placas de yeso, sanitarios, vidrio). Te pedimos que lo confirmes en el mensaje inicial para envolver con cuidado extra." },
+];
+---
+
+<Layout
+  title="Envíos · Ferretería El Tornillo"
+  description="Cómo gestionamos envíos en Ituzaingó, Morón, Hurlingham, Merlo y resto de GBA. Plazos, costos y logística."
+>
+  <nav aria-label="Ruta de navegación" class="border-b border-[var(--color-line)] bg-[var(--color-cream-deep)]">
+    <div class="mx-auto flex max-w-[1400px] items-center gap-2 px-4 py-3 text-xs text-[var(--color-navy-muted)] md:px-8">
+      <a href="/" class="hover:text-[var(--color-mustard-deep)]">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-[var(--color-navy)]">Envíos</span>
+    </div>
+  </nav>
+
+  <section class="border-b border-[var(--color-navy)] bg-[var(--color-cream-deep)] blueprint-bg">
+    <div class="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-4 py-16 md:grid-cols-12 md:px-8 md:py-24">
+      <div class="md:col-span-7">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)] fade-up">Envíos · Logística</p>
+        <h1 class="mt-3 font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--color-navy)] md:text-6xl fade-up" style="animation-delay: 60ms">
+          Salimos de <em class="not-italic text-[var(--color-mustard-deep)]">Ituzaingó</em> con nuestra propia flota.
+        </h1>
+        <p class="mt-6 max-w-[60ch] text-lg leading-relaxed text-[var(--color-navy-muted)] fade-up" style="animation-delay: 120ms">
+          No tercerizamos envíos. Hacemos tres repartidas por día en zona oeste y
+          para el resto de GBA coordinamos con fleteros de confianza que
+          conocemos hace años.
+        </p>
+      </div>
+      <aside class="md:col-span-5 fade-up" style="animation-delay: 200ms">
+        <div class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream)] p-6">
+          <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Resumen</p>
+          <ul class="mt-4 space-y-3 text-sm">
+            <li class="flex items-start gap-3">
+              <span aria-hidden="true" class="mono mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center border border-[var(--color-navy)] bg-[var(--color-mustard)] text-[10px] font-bold text-[var(--color-navy)]">A</span>
+              <span class="text-[var(--color-navy)]"><strong class="text-[var(--color-navy)]">Ituzaingó:</strong> 24-48 hs desde confirmación.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span aria-hidden="true" class="mono mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center border border-[var(--color-navy)] bg-[var(--color-mustard)] text-[10px] font-bold text-[var(--color-navy)]">B</span>
+              <span class="text-[var(--color-navy)]"><strong class="text-[var(--color-navy)]">Zona oeste:</strong> 48-72 hs hábiles.</span>
+            </li>
+            <li class="flex items-start gap-3">
+              <span aria-hidden="true" class="mono mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center border border-[var(--color-navy)] bg-[var(--color-mustard)] text-[10px] font-bold text-[var(--color-navy)]">C</span>
+              <span class="text-[var(--color-navy)]"><strong class="text-[var(--color-navy)]">CABA / GBA:</strong> a convenir según volumen.</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-8 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Tarifario editorial</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Zonas, plazos y costos.</h2>
+        <p class="mt-3 max-w-[60ch] text-sm text-[var(--color-navy-muted)]">
+          Los precios publicados son orientativos. El envío se confirma en el momento del pedido porque depende del peso y volumen real.
+        </p>
+      </header>
+
+      <ul class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        {zones.map((z) => (
+          <li class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream)] p-5 transition-colors hover:bg-[var(--color-cream-deep)]">
+            <div class="flex items-baseline justify-between gap-3 border-b border-[var(--color-line)] pb-2">
+              <span class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">Zona · {z.code}</span>
+              <span class="mono text-[11px] uppercase tracking-[0.18em] text-[var(--color-mustard-deep)]">{z.eta}</span>
+            </div>
+            <h3 class="mt-3 font-display text-xl font-semibold leading-tight text-[var(--color-navy)]">{z.name}</h3>
+            <p class="mt-1 text-sm text-[var(--color-navy-muted)]">{z.detail}</p>
+            <dl class="mt-4 flex items-end justify-between gap-3 border-t border-[var(--color-line)] pt-3">
+              <div>
+                <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Costo</dt>
+                <dd class="mono mt-1 text-xl font-bold tabular-nums text-[var(--color-navy)]">{z.cost}</dd>
+              </div>
+              <p class="text-right text-[11px] leading-relaxed text-[var(--color-navy-muted)]">{z.note}</p>
+            </dl>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-cream-deep)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Cómo funciona</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">De la lista al mostrador o a tu obra.</h2>
+      </header>
+
+      <ol class="grid grid-cols-1 gap-5 md:grid-cols-3">
+        {pasos.map((p) => (
+          <li class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream)] p-6">
+            <p class="mono text-3xl font-bold tabular-nums text-[var(--color-mustard-deep)]">{p.n}</p>
+            <h3 class="mt-3 font-display text-xl font-semibold leading-tight text-[var(--color-navy)]">{p.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-navy-muted)]">{p.body}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <div class="grid grid-cols-1 gap-10 md:grid-cols-12">
+        <div class="md:col-span-6">
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Notas operativas</p>
+          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Lo que tenés que saber antes de pedir.</h2>
+          <ul class="mt-6 space-y-4 text-sm leading-relaxed text-[var(--color-navy-muted)]">
+            <li class="flex items-start gap-3 border-l-2 border-[var(--color-mustard)] pl-4">
+              <strong class="text-[var(--color-navy)]">Retiros:</strong> El pedido se entrega en mostrador con nombre y SKU. No entregamos a terceros sin autorización por WhatsApp.
+            </li>
+            <li class="flex items-start gap-3 border-l-2 border-[var(--color-mustard)] pl-4">
+              <strong class="text-[var(--color-navy)]">Mercadería frágil:</strong> Placas de yeso, sanitarios y vidrio se embalan con protección extra. Coordinar en el mensaje inicial.
+            </li>
+            <li class="flex items-start gap-3 border-l-2 border-[var(--color-mustard)] pl-4">
+              <strong class="text-[var(--color-navy)]">Materiales pesados:</strong> Más de 80 kg se entregan en planta baja o entrada de obra. No subimos por escalera sin ascensor montacarga.
+            </li>
+            <li class="flex items-start gap-3 border-l-2 border-[var(--color-mustard)] pl-4">
+              <strong class="text-[var(--color-navy)]">Cambios y devoluciones:</strong> 7 días corridos con packaging original y comprobante. Productos eléctricos sellados no se aceptan si fueron abiertos.
+            </li>
+          </ul>
+        </div>
+
+        <aside class="md:col-span-6">
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Preguntas frecuentes</p>
+          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Lo que nos suelen preguntar.</h2>
+          <dl class="mt-6 space-y-5">
+            {faq.map((f) => (
+              <div class="border-b border-[var(--color-line)] pb-4">
+                <dt class="font-display text-lg font-semibold leading-tight text-[var(--color-navy)]">
+                  {f.q}
+                </dt>
+                <dd class="mt-2 text-sm leading-relaxed text-[var(--color-navy-muted)]">
+                  {f.a}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-navy)] py-16 text-[var(--color-cream)] md:py-20">
+    <div class="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-8 px-4 md:grid-cols-12 md:px-8">
+      <div class="md:col-span-8">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard)]">Coordinar un envío</p>
+        <h2 class="mt-2 font-display text-3xl font-bold leading-tight md:text-5xl">
+          ¿Tenés el carrito armado y querés saber el costo de envío?
+        </h2>
+        <p class="mt-3 max-w-[60ch] text-base text-[var(--color-line-soft)]">
+          Mandanos la lista y tu código postal. Te respondemos con el costo exacto y un horario tentativo.
+        </p>
+      </div>
+      <div class="md:col-span-4">
+        <a
+          href={whatsappLink("Hola, quiero coordinar un envío.")}
+          target="_blank"
+          rel="noopener"
+          class="mono inline-flex w-full items-center justify-center gap-2 bg-[var(--color-mustard)] px-6 py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--color-navy)] transition-colors hover:bg-[var(--color-mustard-deep)] active:scale-[0.98]"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.46 0 .12 5.34.12 11.92c0 2.1.55 4.16 1.6 5.96L0 24l6.28-1.64a11.92 11.92 0 0 0 5.76 1.47h.01c6.58 0 11.92-5.34 11.92-11.92 0-3.18-1.24-6.18-3.45-8.43zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.73.97 1-3.64-.24-.37a9.88 9.88 0 0 1-1.51-5.24c0-5.46 4.45-9.91 9.91-9.91 2.65 0 5.14 1.03 7.01 2.9a9.86 9.86 0 0 1 2.9 7.01c0 5.46-4.45 9.91-9.91 9.91z" />
+          </svg>
+          Coordinar envío
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-pinza-amperimetrica-600v">
+  <title id="t-pinza-amperimetrica-600v">Pinza amperimétrica digital 600V</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="240" y="120" width="200" height="320" rx="20" fill="#171513"/>
+      <rect x="260" y="150" width="160" height="100" fill="#5d544a"/>
+      <rect x="280" y="170" width="120" height="60" fill="#c28e3f"/>
+      <rect x="280" y="240" width="120" height="14" fill="#f5f2ea"/>
+      <path d="M 340 60 Q 280 60 280 120 L 280 200" fill="none" stroke="#171513" stroke-width="20"/>
+      <path d="M 340 60 Q 400 60 400 120 L 400 200" fill="none" stroke="#171513" stroke-width="20"/>
+      <rect x="260" y="350" width="160" height="60" fill="#5d544a"/>
+      <circle cx="380" cy="380" r="14" fill="#c28e3f"/>
+    </g>
+</svg>

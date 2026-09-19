@@ -1,0 +1,210 @@
+﻿---
+/**
+ * /nosotros — Página editorial de la ferretería.
+ */
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { whatsappLink } from "../../lib/whatsapp";
+
+const products = await getCollection("products");
+const totalProducts = products.length;
+const brands = new Set(products.map((p) => p.data.brand).filter(Boolean)).size;
+const categories = new Set(products.map((p) => p.data.category)).size;
+
+const timeline = [
+  { year: "1985", title: "Apertura del mostrador", body: "Don Osvaldo abre la ferretería en una cuadra que en ese momento tenía dos galpones vacíos. Empieza con bulones, fijaciones y las herramientas manuales que le dejaban los proveedores de zona oeste." },
+  { year: "1996", title: "Llegada de las primeras eléctricas", body: "Bosch y Gamma nos entregan la primera amoladora y el primer taladro con garantía oficial. Empezamos a prestar servicio técnico en el local y aprendemos a calibrar carbones y a reparar gatillos." },
+  { year: "2008", title: "Mudanza al local actual", body: "San Martín 4520. Duplicamos el depósito y sumamos plomería, electricidad y gas. Es el momento en que el mostrador empieza a tener stock real y los constructores de la zona dejan de ir a Capital." },
+  { year: "2024", title: "Catálogo online y WhatsApp", body: "Publicamos lo que hay en el mostrador. Te confirmamos stock y precio por mensaje antes de que vengas. Sin tienda online, sin intermediarios, sin sorpresas." },
+];
+
+const valores = [
+  { code: "01", title: "Stock verificable", body: "Lo que ves en el catálogo es lo que hay en el mostrador o en el depósito. Si dice 'en stock', podés venir a retirarlo hoy." },
+  { code: "02", title: "Precio conversable", body: "Si vas a llevar volumen, charlamos. Hacemos descuento por cantidad en fijaciones, pinturas y materiales de obra seca." },
+  { code: "03", title: "Asesoramiento sin apuro", body: "No cobramos por consultarnos. Si no sabés qué mecha usar, qué cable lleva un circuito o cuántas latas de látex necesitás, te lo calculamos." },
+  { code: "04", title: "Servicio técnico propio", body: "Para las marcas que revendemos. Carbones, rodamientos y repuestos originales. Lo que se rompe no se tira." },
+];
+
+const equipo = [
+  { nombre: "Osvaldo Pereyra", rol: "Fundador · Mostrador", initials: "OP" },
+  { nombre: "Mariela Suárez", rol: "Pinturería y stock", initials: "MS" },
+  { nombre: "Lucas Pereyra", rol: "Eléctricas y gas", initials: "LP" },
+  { nombre: "Sofía Pereyra", rol: "Atención online y WhatsApp", initials: "SP" },
+];
+---
+
+<Layout
+  title="Nosotros · Ferretería El Tornillo"
+  description="Ferretería familiar en Ituzaingó desde 1985. Conocé cómo trabajamos, nuestra historia y el equipo que te atiende en el mostrador."
+>
+  <nav aria-label="Ruta de navegación" class="border-b border-[var(--color-line)] bg-[var(--color-cream-deep)]">
+    <div class="mx-auto flex max-w-[1400px] items-center gap-2 px-4 py-3 text-xs text-[var(--color-navy-muted)] md:px-8">
+      <a href="/" class="hover:text-[var(--color-mustard-deep)]">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-[var(--color-navy)]">Nosotros</span>
+    </div>
+  </nav>
+
+  <section class="border-b border-[var(--color-navy)] bg-[var(--color-cream-deep)] blueprint-bg">
+    <div class="mx-auto grid max-w-[1400px] grid-cols-1 gap-12 px-4 py-16 md:grid-cols-12 md:px-8 md:py-24">
+      <div class="md:col-span-7">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)] fade-up">
+          Nosotros · Manifiesto
+        </p>
+        <h1 class="mt-3 font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--color-navy)] md:text-6xl fade-up" style="animation-delay: 60ms">
+          Cuarenta años a una <em class="not-italic text-[var(--color-mustard-deep)]">cuadra</em> de tu obra.
+        </h1>
+        <p class="mt-6 max-w-[60ch] text-lg leading-relaxed text-[var(--color-navy-muted)] fade-up" style="animation-delay: 120ms">
+          No somos una tienda online ni vamos a serlo. Somos una ferretería
+          familiar de Ituzaingó donde atendemos en el mostrador, te decimos qué
+          tenés que comprar y qué no, y dejamos tu pedido listo para retirar.
+          Si querés venir a la ferretería, esta es nuestra historia.
+        </p>
+
+        <dl class="mt-10 grid grid-cols-3 gap-4 border-t border-[var(--color-navy)] pt-6 fade-up" style="animation-delay: 180ms">
+          <div>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Años</dt>
+            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl tabular-nums">40</dd>
+          </div>
+          <div>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">En catálogo</dt>
+            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl tabular-nums">{String(totalProducts).padStart(3, "0")}</dd>
+          </div>
+          <div>
+            <dt class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Marcas</dt>
+            <dd class="mono mt-1 text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl tabular-nums">{String(brands).padStart(2, "0")}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <aside class="md:col-span-5 fade-up" style="animation-delay: 200ms">
+        <div class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream)] p-6">
+          <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">
+            Quiénes somos en una línea
+          </p>
+          <p class="mt-3 font-display text-xl leading-snug text-[var(--color-navy)]">
+            Ferretería familiar de zona oeste. Stock verificable, precio conversable y
+            asesoramiento sin apuro. Desde 1985.
+          </p>
+          <div class="mt-5 border-t border-[var(--color-line)] pt-4 space-y-2 text-sm text-[var(--color-navy-muted)]">
+            <p><strong class="text-[var(--color-navy)]">Rubro:</strong> {categories} categorías, {totalProducts} productos, {brands} marcas</p>
+            <p><strong class="text-[var(--color-navy)]">Cobertura:</strong> Ituzaingó, Morón, Hurlingham, Merlo</p>
+            <p><strong class="text-[var(--color-navy)]">Modalidad:</strong> mostrador + catálogo online</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--color-navy)] pb-4">
+        <div>
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Sección 02 · Línea de tiempo</p>
+          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Cuatro décadas, una ferretería.</h2>
+        </div>
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">1985 — Hoy</p>
+      </header>
+
+      <ol class="grid grid-cols-1 gap-3 md:grid-cols-4">
+        {timeline.map((t, i) => (
+          <li class="relative border border-[var(--color-line)] bg-[var(--color-cream)] p-5 transition-colors hover:bg-[var(--color-cream-deep)]">
+            <div class="flex items-baseline justify-between">
+              <span class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">
+                Hito · {String(i + 1).padStart(2, "0")}
+              </span>
+              <span class="mono text-2xl font-bold tracking-tight text-[var(--color-mustard-deep)] tabular-nums">
+                {t.year}
+              </span>
+            </div>
+            <h3 class="mt-3 font-display text-xl font-semibold leading-tight text-[var(--color-navy)]">
+              {t.title}
+            </h3>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-navy-muted)]">
+              {t.body}
+            </p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-navy)] bg-[var(--color-navy)] py-16 text-[var(--color-cream)] md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 flex flex-wrap items-end justify-between gap-3 border-b border-[var(--color-cream)]/20 pb-4">
+        <div>
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard)]">Sección 03 · Manifiesto</p>
+          <h2 class="mt-2 font-display text-3xl font-bold tracking-tight md:text-4xl">Cómo trabajamos.</h2>
+        </div>
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-line-soft)]">Cuatro reglas del mostrador</p>
+      </header>
+
+      <div class="grid grid-cols-1 gap-3 md:grid-cols-4">
+        {valores.map((v) => (
+          <article class="border border-[var(--color-cream)]/15 bg-[var(--color-navy-deep)] p-5 transition-colors hover:bg-[var(--color-navy)]">
+            <p class="mono text-2xl font-bold tabular-nums text-[var(--color-mustard)]">{v.code}</p>
+            <h3 class="mt-3 font-display text-xl font-semibold leading-tight">{v.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-line-soft)]">{v.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Sección 04 · El equipo</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Quién te atiende.</h2>
+      </header>
+
+      <ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
+        {equipo.map((person) => (
+          <li class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream-deep)] p-5 transition-colors hover:bg-[var(--color-cream)]">
+            <div class="flex items-center gap-4">
+              <span aria-hidden="true" class="flex h-14 w-14 shrink-0 items-center justify-center border border-[var(--color-navy)] bg-[var(--color-mustard)] font-display text-xl font-bold text-[var(--color-navy)]">
+                {person.initials}
+              </span>
+              <div class="min-w-0">
+                <p class="font-display text-lg font-semibold leading-tight text-[var(--color-navy)]">
+                  {person.nombre}
+                </p>
+                <p class="mono mt-1 text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">
+                  {person.rol}
+                </p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-mustard)] py-16 text-[var(--color-navy)] md:py-20">
+    <div class="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-8 px-4 md:grid-cols-12 md:px-8">
+      <div class="md:col-span-8">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-navy)]">Antes de venir</p>
+        <h2 class="mt-2 font-display text-3xl font-bold leading-tight md:text-5xl">
+          ¿Te queda alguna duda que no entra en la página?
+        </h2>
+        <p class="mt-3 max-w-[60ch] text-base text-[var(--color-navy-deep)]">
+          Escribinos por WhatsApp y te respondemos Osvaldo, Mariela, Lucas o Sofi.
+          Quien esté en el mostrador.
+        </p>
+      </div>
+      <div class="md:col-span-4">
+        <a
+          href={whatsappLink("Hola, quiero consultar sobre la ferretería")}
+          target="_blank"
+          rel="noopener"
+          class="mono inline-flex w-full items-center justify-center gap-2 bg-[var(--color-navy)] px-6 py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)] transition-colors hover:bg-[var(--color-navy-deep)] active:scale-[0.98]"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.46 0 .12 5.34.12 11.92c0 2.1.55 4.16 1.6 5.96L0 24l6.28-1.64a11.92 11.92 0 0 0 5.76 1.47h.01c6.58 0 11.92-5.34 11.92-11.92 0-3.18-1.24-6.18-3.45-8.43zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.73.97 1-3.64-.24-.37a9.88 9.88 0 0 1-1.51-5.24c0-5.46 4.45-9.91 9.91-9.91 2.65 0 5.14 1.03 7.01 2.9a9.86 9.86 0 0 1 2.9 7.01c0 5.46-4.45 9.91-9.91 9.91z" />
+          </svg>
+          Abrir WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -7,6 +7,7 @@ sku: ELE-LTE-225
 image: /images/products/llave-termica-bipolar-25a.svg
 imageAlt: Llave térmica bipolar de 25 amperes color gris con palanca amarilla
 featured: true
+bestSeller: false
 tags:
   - térmica
   - bipolar

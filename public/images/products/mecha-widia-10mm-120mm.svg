@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-mecha-widia-10mm-120mm">
+  <title id="t-mecha-widia-10mm-120mm">Mecha widia 10mm x 120mm</title>
+  <rect width="800" height="800" fill="#ebe6d8"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="380" y="240" width="220" height="50" fill="#171513"/>
+      <rect x="380" y="270" width="220" height="14" fill="#c28e3f"/>
+      <rect x="380" y="284" width="220" height="6" fill="#171513"/>
+      <polygon points="380,265 320,290 280,260 280,220 320,200 380,215" fill="#5d544a"/>
+      <polygon points="320,200 280,220 270,250 290,260 320,250 350,250 380,240 380,210" fill="#c28e3f"/>
+      <polygon points="290,260 280,300 320,310 380,310 380,270 320,260" fill="#171513"/>
+      <text x="490" y="200" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="34" fill="#171513" font-weight="700">10 mm</text>
+      <text x="490" y="420" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="22" fill="#171513">120 mm</text>
+    </g>
+</svg>

@@ -7,6 +7,7 @@ sku: PIN-LAT-120
 image: /images/products/latex-interior-20l-sherwin.svg
 imageAlt: Balde de látex interior de 20 litros con etiqueta azul
 featured: true
+bestSeller: false
 tags:
   - látex
   - interior

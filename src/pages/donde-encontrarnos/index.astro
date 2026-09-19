@@ -1,0 +1,287 @@
+﻿---
+/**
+ * /donde-encontrarnos — Página con direcciones, horarios y mapa SVG.
+ *
+ * Estructura:
+ *  - Hero editorial con la dirección principal destacada
+ *  - Mapa SVG estático de Ituzaingó (sin iframe externo)
+ *  - Tabla de horarios
+ *  - 4 referencias sobre cómo llegar (tren / colectivo / auto / a pie)
+ *  - Sedes/puntos de retiro alternativos (mostrador + obras sociales)
+ *  - CTA WhatsApp
+ */
+import Layout from "../../layouts/Layout.astro";
+import { PHONE_FORMATTED, whatsappLink } from "../../lib/whatsapp";
+
+const phone = PHONE_FORMATTED;
+
+const referencias = [
+  {
+    code: "T",
+    title: "En tren",
+    body: "Estación Ituzaingó (línea Sarmiento), ramal Once → Moreno. Salís por Av. Rivadavia y caminás cuatro cuadras al sur por San Martín.",
+  },
+  {
+    code: "B",
+    title: "En colectivo",
+    body: "Líneas 238, 245 y 136 paran en San Martín y Blas Parera. La parada queda a 50 metros del local.",
+  },
+  {
+    code: "A",
+    title: "En auto",
+    body: "Desde CABA, Acceso Oeste hasta bajada de Av. Rivadavia. Desde Morón centro, San Martín hasta el 4500. Hay estacionamiento en la cuadra.",
+  },
+  {
+    code: "P",
+    title: "A pie",
+    body: "Zona céntrica de Ituzaingó. Sobre la Av. San Martín, entre Blas Parera y Gral. Paz. A una cuadra del colegio San José.",
+  },
+];
+
+const sedes = [
+  {
+    code: "01",
+    name: "Ferretería El Tornillo · Mostrador",
+    address: "Av. San Martín 4520, Ituzaingó",
+    hours: "Lun-Vie 08:30 a 19:00 · Sáb 08:30 a 13:30",
+    primary: true,
+  },
+  {
+    code: "02",
+    name: "Depósito mayorista (retiro concertado)",
+    address: "San Martín 4520 — mismo edificio, portón lateral",
+    hours: "Sólo con pedido confirmado · coordinar por WhatsApp",
+    primary: false,
+  },
+  {
+    code: "03",
+    name: "Punto de retiro · Obra en Morón",
+    address: "Av. Rivadavia 21000, Morón",
+    hours: "Sólo clientes con presupuesto abierto",
+    primary: false,
+  },
+];
+---
+
+<Layout
+  title="Dónde encontrarnos · Ferretería El Tornillo"
+  description="Dirección, horarios y cómo llegar a Ferretería El Tornillo en Ituzaingó. Tren, colectivo, auto y referencias."
+>
+  <nav aria-label="Ruta de navegación" class="border-b border-[var(--color-line)] bg-[var(--color-cream-deep)]">
+    <div class="mx-auto flex max-w-[1400px] items-center gap-2 px-4 py-3 text-xs text-[var(--color-navy-muted)] md:px-8">
+      <a href="/" class="hover:text-[var(--color-mustard-deep)]">Inicio</a>
+      <span aria-hidden="true">/</span>
+      <span class="text-[var(--color-navy)]">Dónde encontrarnos</span>
+    </div>
+  </nav>
+
+  <section class="border-b border-[var(--color-navy)] bg-[var(--color-cream-deep)]">
+    <div class="mx-auto max-w-[1400px] px-4 py-16 md:px-8 md:py-24">
+      <div class="grid grid-cols-1 gap-12 md:grid-cols-12">
+        <div class="md:col-span-5 fade-up">
+          <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Ubicación</p>
+          <h1 class="mt-3 font-display text-4xl font-bold leading-[1.02] tracking-tight text-[var(--color-navy)] md:text-5xl">
+            Estamos a <em class="not-italic text-[var(--color-mustard-deep)]">cuatro cuadras</em> de la estación Ituzaingó.
+          </h1>
+          <p class="mt-6 max-w-[40ch] text-lg leading-relaxed text-[var(--color-navy-muted)]">
+            Mostrador atendido por Osvaldo, Mariela, Lucas y Sofi.
+            Pedidos con retiro en el día si entran antes de las 17:00.
+          </p>
+
+          <address class="mt-8 not-italic border-l-2 border-[var(--color-mustard)] pl-4">
+            <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Mostrador principal</p>
+            <p class="mt-1 font-display text-2xl text-[var(--color-navy)]">Av. San Martín 4520</p>
+            <p class="text-sm text-[var(--color-navy-muted)]">Ituzaingó · Buenos Aires · CP B1714</p>
+            <p class="mono mt-2 text-sm text-[var(--color-navy)]">{phone}</p>
+          </address>
+
+          <a
+            href="https://maps.google.com/?q=Av.+San+Mart%C3%ADn+4520,+Ituzaing%C3%B3"
+            target="_blank"
+            rel="noopener"
+            class="mono mt-6 inline-flex items-center gap-2 bg-[var(--color-navy)] px-5 py-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)] transition-colors hover:bg-[var(--color-mustard)] hover:text-[var(--color-navy)]"
+          >
+            Abrir en Google Maps <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <aside class="md:col-span-7 fade-up" style="animation-delay: 120ms">
+          <div class="crosshair relative overflow-hidden border border-[var(--color-navy)] bg-[var(--color-cream)]">
+            <svg viewBox="0 0 600 360" class="block h-auto w-full" role="img" aria-label="Mapa esquemático de la ubicación de la ferretería en Ituzaingó">
+              <rect x="0" y="0" width="600" height="360" fill="var(--color-cream-deep)"/>
+              {/* grilla blueprint */}
+              <g stroke="var(--color-line)" stroke-width="0.6">
+                <path d="M0 30 H600 M0 60 H600 M0 90 H600 M0 120 H600 M0 150 H600 M0 180 H600 M0 210 H600 M0 240 H600 M0 270 H600 M0 300 H600 M0 330 H600" />
+                <path d="M30 0 V360 M60 0 V360 M90 0 V360 M120 0 V360 M150 0 V360 M180 0 V360 M210 0 V360 M240 0 V360 M270 0 V360 M300 0 V360 M330 0 V360 M360 0 V360 M390 0 V360 M420 0 V360 M450 0 V360 M480 0 V360 M510 0 V360 M540 0 V360 M570 0 V360" />
+              </g>
+              {/* calles principales */}
+              <g stroke="var(--color-navy)" stroke-linecap="square">
+                <line x1="0" y1="180" x2="600" y2="180" stroke-width="3" />
+                <line x1="300" y1="0" x2="300" y2="360" stroke-width="3" />
+                <line x1="120" y1="0" x2="120" y2="360" stroke-width="2" />
+                <line x1="450" y1="0" x2="450" y2="360" stroke-width="2" />
+              </g>
+              <g class="mono" fill="var(--color-navy)" font-size="11" font-family="JetBrains Mono, monospace" letter-spacing="0.18em">
+                <text x="20" y="175" font-size="9">AV. RIVADAVIA</text>
+                <text x="305" y="20">SAN MARTÍN</text>
+                <text x="125" y="20" font-size="9">BLAS PARERA</text>
+              </g>
+              {/* estación */}
+              <g>
+                <rect x="270" y="170" width="60" height="22" fill="var(--color-navy)" />
+                <text x="278" y="186" fill="var(--color-mustard)" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">ESTACIÓN</text>
+              </g>
+              {/* local */}
+              <g>
+                <circle cx="420" cy="180" r="12" fill="var(--color-mustard)" stroke="var(--color-navy)" stroke-width="2" />
+                <circle cx="420" cy="180" r="4" fill="var(--color-navy)" />
+                <text x="436" y="184" fill="var(--color-navy)" font-family="JetBrains Mono, monospace" font-size="11" font-weight="700">EL TORNILLO</text>
+                <text x="436" y="198" fill="var(--color-navy-muted, #6B7A99)" font-family="JetBrains Mono, monospace" font-size="9">SAN MARTÍN 4520</text>
+              </g>
+              {/* línea de caminata estación → local */}
+              <g stroke="var(--color-mustard-deep)" stroke-width="2" stroke-dasharray="4 4">
+                <path d="M300 192 Q360 220 408 192" fill="none" />
+              </g>
+              <text x="334" y="245" fill="var(--color-mustard-deep)" font-family="JetBrains Mono, monospace" font-size="9">4 CUADRAS A PIE</text>
+              {/* norte */}
+              <g transform="translate(560,40)">
+                <line x1="0" y1="-15" x2="0" y2="15" stroke="var(--color-navy)" stroke-width="2"/>
+                <polygon points="0,-18 -5,-8 5,-8" fill="var(--color-navy)"/>
+                <text x="-3" y="30" fill="var(--color-navy)" font-family="JetBrains Mono, monospace" font-size="9">N</text>
+              </g>
+              {/* escala */}
+              <g transform="translate(20,320)">
+                <line x1="0" y1="0" x2="80" y2="0" stroke="var(--color-navy)" stroke-width="2"/>
+                <line x1="0" y1="-4" x2="0" y2="4" stroke="var(--color-navy)" stroke-width="2"/>
+                <line x1="80" y1="-4" x2="80" y2="4" stroke="var(--color-navy)" stroke-width="2"/>
+                <text x="0" y="20" fill="var(--color-navy)" font-family="JetBrains Mono, monospace" font-size="9">200 M</text>
+              </g>
+            </svg>
+          </div>
+          <p class="mono mt-3 text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">
+            Mapa esquemático · Av. San Martín y Blas Parera · Ituzaingó centro
+          </p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Cómo llegar</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Cuatro formas, una sola puerta.</h2>
+      </header>
+
+      <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {referencias.map((r) => (
+          <li class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-cream-deep)] p-5 transition-colors hover:bg-[var(--color-cream)]">
+            <div class="flex items-baseline justify-between border-b border-[var(--color-line)] pb-2">
+              <span class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-navy-muted)]">Referencia</span>
+              <span class="mono text-2xl font-bold text-[var(--color-mustard-deep)]">{r.code}</span>
+            </div>
+            <h3 class="mt-3 font-display text-xl font-semibold leading-tight text-[var(--color-navy)]">{r.title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-[var(--color-navy-muted)]">{r.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-y border-[var(--color-line)] bg-[var(--color-cream-deep)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Puntos de retiro</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Dónde retirar tu pedido.</h2>
+      </header>
+
+      <ul class="space-y-4">
+        {sedes.map((s) => (
+          <li class={`crosshair relative border p-5 ${s.primary ? "border-[var(--color-mustard)] bg-[var(--color-mustard)]/5" : "border-[var(--color-navy)] bg-[var(--color-cream)]"}`}>
+            <div class="grid grid-cols-1 gap-4 md:grid-cols-12 md:items-center">
+              <span class={`mono text-2xl font-bold tabular-nums md:col-span-1 ${s.primary ? "text-[var(--color-navy)]" : "text-[var(--color-mustard-deep)]"}`}>{s.code}</span>
+              <div class="md:col-span-5">
+                <p class={`mono text-[10px] uppercase tracking-[0.22em] ${s.primary ? "text-[var(--color-navy)]" : "text-[var(--color-navy-muted)]"}`}>{s.primary ? "Mostrador principal" : "Punto secundario"}</p>
+                <p class="mt-1 font-display text-xl font-semibold leading-tight text-[var(--color-navy)]">{s.name}</p>
+              </div>
+              <div class="md:col-span-3">
+                <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Dirección</p>
+                <p class="mt-1 text-sm text-[var(--color-navy)]">{s.address}</p>
+              </div>
+              <div class="md:col-span-3">
+                <p class="mono text-[10px] uppercase tracking-[0.18em] text-[var(--color-navy-muted)]">Horario</p>
+                <p class="mt-1 text-sm text-[var(--color-navy)]">{s.hours}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="bg-[var(--color-cream)] py-16 md:py-24">
+    <div class="mx-auto max-w-[1400px] px-4 md:px-8">
+      <header class="mb-10 border-b border-[var(--color-navy)] pb-4">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-mustard-deep)]">Horarios</p>
+        <h2 class="mt-2 font-display text-3xl font-bold tracking-tight text-[var(--color-navy)] md:text-4xl">Cuándo te podemos atender.</h2>
+      </header>
+
+      <div class="grid grid-cols-1 gap-6 md:grid-cols-7">
+        <div class="md:col-span-4">
+          <table class="spec-table">
+            <thead>
+              <tr>
+                <th>Día</th>
+                <th class="text-right">Apertura</th>
+                <th class="text-right">Cierre</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Lunes</td><td class="num text-right">08:30</td><td class="num text-right">19:00</td></tr>
+              <tr><td>Martes</td><td class="num text-right">08:30</td><td class="num text-right">19:00</td></tr>
+              <tr><td>Miércoles</td><td class="num text-right">08:30</td><td class="num text-right">19:00</td></tr>
+              <tr><td>Jueves</td><td class="num text-right">08:30</td><td class="num text-right">19:00</td></tr>
+              <tr><td>Viernes</td><td class="num text-right">08:30</td><td class="num text-right">19:00</td></tr>
+              <tr><td>Sábado</td><td class="num text-right">08:30</td><td class="num text-right">13:30</td></tr>
+              <tr><td>Domingo</td><td class="num text-right text-[var(--color-mark)]">CERRADO</td><td class="num text-right text-[var(--color-mark)]">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <aside class="md:col-span-3">
+          <div class="crosshair relative border border-[var(--color-navy)] bg-[var(--color-navy)] p-5 text-[var(--color-cream)]">
+            <p class="mono text-[10px] uppercase tracking-[0.22em] text-[var(--color-mustard)]">Feriado</p>
+            <p class="mt-2 font-display text-xl leading-tight">¿Feriado puente o día no laborable?</p>
+            <p class="mt-2 text-sm text-[var(--color-line-soft)]">
+              Avisamos por WhatsApp y dejamos un cartel en la persiana el día anterior. Si tenés urgencia, mandá mensaje y vemos cómo resolverlo.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="border-t border-[var(--color-line)] bg-[var(--color-mustard)] py-12 text-[var(--color-navy)] md:py-16">
+    <div class="mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-6 px-4 md:grid-cols-12 md:px-8">
+      <div class="md:col-span-8">
+        <p class="mono text-[11px] uppercase tracking-[0.22em] text-[var(--color-navy)]">¿Vienes en camino?</p>
+        <h2 class="mt-2 font-display text-2xl font-bold leading-tight md:text-4xl">
+          Avisanos por WhatsApp cuando salgas y te dejamos el pedido listo.
+        </h2>
+      </div>
+      <div class="md:col-span-4">
+        <a
+          href={whatsappLink("Hola, voy en camino al local. ¿Pueden tener mi pedido listo?")}
+          target="_blank"
+          rel="noopener"
+          class="mono inline-flex w-full items-center justify-center gap-2 bg-[var(--color-navy)] px-6 py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-[var(--color-cream)] transition-colors hover:bg-[var(--color-navy-deep)] active:scale-[0.98]"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+            <path d="M20.52 3.48A11.94 11.94 0 0 0 12.04 0C5.46 0 .12 5.34.12 11.92c0 2.1.55 4.16 1.6 5.96L0 24l6.28-1.64a11.92 11.92 0 0 0 5.76 1.47h.01c6.58 0 11.92-5.34 11.92-11.92 0-3.18-1.24-6.18-3.45-8.43zM12.04 21.8h-.01a9.9 9.9 0 0 1-5.05-1.39l-.36-.21-3.73.97 1-3.64-.24-.37a9.88 9.88 0 0 1-1.51-5.24c0-5.46 4.45-9.91 9.91-9.91 2.65 0 5.14 1.03 7.01 2.9a9.86 9.86 0 0 1 2.9 7.01c0 5.46-4.45 9.91-9.91 9.91z" />
+          </svg>
+          Avisar que voy en camino
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

@@ -7,6 +7,7 @@ sku: PLO-CPV-110
 image: /images/products/canio-pvc-110mm-4m.svg
 imageAlt: Caño de PVC gris de 110mm de diámetro y 4 metros de largo
 featured: false
+bestSeller: false
 tags:
   - pvc
   - 110mm

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="t-destornillador-phillips-ph2-150mm">
+  <title id="t-destornillador-phillips-ph2-150mm">Destornillador Phillips PH2 150mm</title>
+  <rect width="800" height="800" fill="#f5f2ea"/>
+  <rect x="0" y="0" width="800" height="800" fill="none" stroke="#d8d2c2" stroke-width="2"/>
+  <!-- corner crosshair marks (pliego técnico feel) -->
+  <g stroke="#d8d2c2" stroke-width="2" fill="none">
+    <path d="M 20 60 L 60 60 M 60 20 L 60 60"/>
+    <path d="M 780 60 L 740 60 M 740 20 L 740 60"/>
+    <path d="M 20 740 L 60 740 M 60 780 L 60 740"/>
+    <path d="M 780 740 L 740 740 M 740 780 L 740 740"/>
+  </g>
+  
+    <g transform="translate(0,0)">
+      <rect x="380" y="80" width="220" height="60" fill="#5d544a"/>
+      <rect x="380" y="140" width="220" height="20" fill="#171513"/>
+      <rect x="380" y="160" width="20" height="160" fill="#171513"/>
+      <polygon points="380,320 400,320 400,360 390,400 380,360" fill="#171513"/>
+      <path d="M 130 240 L 130 380 Q 130 460 220 460 L 360 460 Q 380 460 380 440 L 380 240 Q 380 220 360 220 L 150 220 Q 130 220 130 240 Z" fill="#c28e3f"/>
+      <rect x="160" y="250" width="200" height="20" fill="#171513"/>
+      <rect x="160" y="290" width="120" height="14" fill="#171513"/>
+      <rect x="160" y="320" width="160" height="14" fill="#171513"/>
+      <text x="240" y="400" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="22" fill="#171513" font-weight="700">PH2 · 150</text>
+    </g>
+</svg>

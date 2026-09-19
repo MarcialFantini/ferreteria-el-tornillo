@@ -53,6 +53,18 @@ export const CATEGORIES = [
     description:
       "Flexibles, válvulas y conexiones certificadas para gas natural y envasado. Trabajamos con matriculados.",
   },
+  {
+    name: "Jardín",
+    slug: "jardin",
+    description:
+      "Mangueras, picos, tijeras de podar y herramientas de mano para jardín. Repasamos filo y probamos antes de vender.",
+  },
+  {
+    name: "Seguridad",
+    slug: "seguridad",
+    description:
+      "Cerraduras, candados, cerrojos y elementos de protección personal. Trabajamos con primeras marcas del rubro.",
+  },
 ] as const;
 
 export type CategoryName = (typeof CATEGORIES)[number]["name"];

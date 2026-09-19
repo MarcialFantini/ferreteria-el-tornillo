@@ -7,6 +7,7 @@ sku: HER-AMO-082
 image: /images/products/amoladora-angular-4-bosch.svg
 imageAlt: Amoladora angular Bosch color azul oscuro con disco de 4½ pulgadas
 featured: true
+bestSeller: false
 tags:
   - amoladora
   - angular
